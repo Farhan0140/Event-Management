@@ -4,13 +4,60 @@ from django.contrib import messages
 from django.db.models import Q, Count
 from app_admin.models import Category, Event
 from datetime import date
-from app_admin.forms import Create_Model_Event, Create_Model_Category
+from app_admin.forms import Create_Model_Event, Create_Model_Category, Create_Model_User
 
 # Create your views here.
 
 def test(request):
     return render(request, "test.html")
 
+def details(request):
+
+    if request.GET.get('book_now'):
+        id = request.GET.get('book_now')
+        event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
+        total_participant = event.participants.aggregate(p_cnt = Count('id'))
+        user_form = Create_Model_User()
+        context = {
+            'event': event,
+            'total_participant': total_participant['p_cnt'],
+            'user_form': user_form
+        }
+
+        if request.method == "POST":
+            user_form = Create_Model_User(request.POST)
+
+            if user_form.is_valid():
+                user = user_form.save()
+                user.event.add(event)
+
+                messages.success(request, "Booked Successfully")
+                return render(request, "create_user.html", context)
+            else:
+                messages.error(request, "Enter Valid Email [ example@example.example ]")
+                return render(request, "create_user.html", context)
+
+
+
+        return render(request, "create_user.html", context)
+    
+    else:
+        id = request.GET.get('dtl')
+
+        event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
+        total_participant = event.participants.aggregate(p_cnt = Count('id'))
+
+        context = {
+            'event': event,
+            'total_participant': total_participant['p_cnt']
+        }
+
+
+    # if request.method == 'POST':
+
+
+    # print(total_participant)
+    return render(request, "dashboard/details.html", context)
 
 
 def organizer_dashboard(request):

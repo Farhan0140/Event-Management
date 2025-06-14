@@ -27,6 +27,11 @@ class For_Mixin:
                 field.widget.attrs.update({
                     'class': f"{self.default_classes} w-full",
                 })
+            elif isinstance(field.widget, forms.EmailInput):
+                field.widget.attrs.update({
+                    'class': f'{self.default_classes} w-full',
+                    "placeholder": f"Enter {field.label}",
+                })
                 
 
 
@@ -73,3 +78,18 @@ class Create_Model_Category( For_Mixin, forms.ModelForm ):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.apply_mixin()
+
+
+
+class Create_Model_User( For_Mixin, forms.ModelForm ):
+    class Meta:
+        model = Participant
+        exclude = ['event']
+
+        widget = {
+            'email': forms.EmailInput()
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_mixin() 

@@ -1,0 +1,40 @@
+{% extends "dashboard/nav.html" %}
+
+
+{% block for_main %}
+
+{% load static %}
+
+<div class="rounded-lg relative my-10">
+    <div class="absolute inset-0 blur-md z-0 " 
+        style="background-image: url('{% static 'images/2.jpg' %}'); background-size: cover; background-repeat: no-repeat;">
+    </div>
+        
+        
+    <div class=" bg-black opacity-60 relative z-10 lg:p-10 rounded-lg">
+        <div class="grid lg:grid-cols-3 gap-4 h-full">
+            <div class="lg:col-span-2 h-full border border-white text-white lg:p-10 p-5 flex flex-col justify-center gap-10 rounded-lg"> 
+                <h1 class="lg:text-xl font-bold">Event Name : <span class="font-normal"> {{ event.event_name }} </span></h1> 
+                <h1 class="lg:text-lg font-bold">Description : <span class="font-normal"> {{ event.description }} </span> </h1>
+                <h1 class="lg:text-lg font-bold">Category : <span class="font-normal"> {{ event.category.category_name }} </span></h1>
+                <h1 class="lg:text-lg font-bold">Total Participants : <span class="font-normal"> {{ total_participant }} </span></h1>
+            </div>
+            <div class="h-full border border-white text-white lg:p-10 p-5 flex flex-col justify-center gap-10 rounded-lg"> 
+                <h1 class="lg:text-xl font-bold">Date : <span class="font-normal"> {{ event.date }} </span></h1>
+                <h1 class="lg:text-lg font-bold">Time : <span class="font-normal"> {{ event.time }} </span></h1>
+                <h1 class="lg:text-lg font-bold">Location : <span class="font-normal"> {{ event.location }} </span></h1>
+                <a href="{% url "details" %}?book_now={{event.id}}" class="h-10">
+                    <div class="border border-white flex items-center rounded-lg justify-center h-full bg-gray-100 text-black">
+                        <h1 class="font-bold">Book Now!</h1>
+                    </div> 
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block for_book_now %}
+
+{% endblock for_book_now %}
+
+{% endblock for_main %}
