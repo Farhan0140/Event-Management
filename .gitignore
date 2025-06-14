@@ -1,0 +1,8 @@
+db.sqlite3
+node_modules/
+static/css/
+__pycache__/
+migrations/
+package-lock.json
+package.json
+tailwind.config.js
