@@ -29,14 +29,16 @@ def details(request):
             if user_form.is_valid():
 
                 cln_data = user_form.cleaned_data
+                print(cln_data)
                 email = cln_data['user_email'].lower()
                 email_from_db = Participant.objects.filter(user_email__iexact=email)
+                print(email, email_from_db)
                 
-                if email != email_from_db.first().user_email :
+                if not email_from_db:
                     user = user_form.save()
                     user.event.add(event)
 
-                    messages.success(request, "Booked Successfully")
+                    messages.success(request, "Account created & Booked Successfully")
                     return render(request, "create_user.html", context)
 
                 else:
@@ -83,14 +85,18 @@ def organizer_dashboard(request):
     category_events = None
 
     events = Event.objects.select_related('category').prefetch_related('participants')
-    
 
-    counts = events.aggregate(
-        total_event = Count('id'),
-        total_participant = Count('participants'),
-        upcoming_events = Count('id', filter = Q(date__gt = date.today())),
-        past_events = Count('id', filter = Q(date__lt = date.today()))
-    )
+    total_event = Event.objects.count()
+    upcoming_events = Event.objects.filter(date__gt=date.today()).count()
+    past_events = Event.objects.filter(date__lt=date.today()).count()
+    total_participant = Participant.objects.count()
+
+    counts = {
+        'total_event': total_event,
+        'upcoming_events': upcoming_events,
+        'past_events': past_events,
+        'total_participant': total_participant,
+    }
 
     if category_selector != None:
         event_name = "Categories"
