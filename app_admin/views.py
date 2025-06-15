@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
 from django.db.models import Q, Count
-from app_admin.models import Category, Event
+from app_admin.models import Category, Event, Participant
 from datetime import date
 from app_admin.forms import Create_Model_Event, Create_Model_Category, Create_Model_User
 
@@ -28,13 +28,33 @@ def details(request):
             user_form = Create_Model_User(request.POST)
 
             if user_form.is_valid():
-                user = user_form.save()
-                user.event.add(event)
 
-                messages.success(request, "Booked Successfully")
-                return render(request, "create_user.html", context)
+                cln_data = user_form.cleaned_data
+                email = cln_data['user_email'].lower()
+                email_from_db = Participant.objects.filter(user_email__iexact=email)
+                
+                if email != email_from_db.first().user_email :
+                    user = user_form.save()
+                    user.event.add(event)
+
+                    messages.success(request, "Booked Successfully")
+                    return render(request, "create_user.html", context)
+
+                else:
+                    # id = email_from_db.first().id
+                     
+                    already_registered = email_from_db.prefetch_related('event').filter(event__id=event.id)
+                    if already_registered:
+                        messages.info(request, "You Registered This Event Already")
+                        return render(request, "create_user.html", context)
+                    else:
+                        user = user_form.save()
+                        user.event.add(event)
+                        messages.info(request, "Registration Complete Successful For this Event")
+                        return render(request, "create_user.html", context)
+                
             else:
-                messages.error(request, "Enter Valid Email [ example@example.example ]")
+                messages.error(request, "Enter Valid Email [ example@example.example ] ")
                 return render(request, "create_user.html", context)
 
 

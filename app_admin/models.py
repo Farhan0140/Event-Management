@@ -23,7 +23,7 @@ class Event(models.Model):
 
 class Participant(models.Model):
     user_name = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
+    user_email = models.EmailField(max_length=100) # For using unique=True I got Some Error, Thats why i remove it
     event = models.ManyToManyField(
         Event,
         related_name="participants"

@@ -2,7 +2,6 @@
 from django import forms
 from app_admin.models import Participant, Category, Event
 
-
 class For_Mixin:
     default_classes = "p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
 
@@ -30,7 +29,7 @@ class For_Mixin:
             elif isinstance(field.widget, forms.EmailInput):
                 field.widget.attrs.update({
                     'class': f'{self.default_classes} w-full',
-                    "placeholder": f"Enter {field.label}",
+                    "placeholder": f"Enter {field.label}: example@example.example",
                 })
                 
 
@@ -54,8 +53,6 @@ class Create_Model_Event( For_Mixin, forms.ModelForm ):
             'location': forms.Textarea(attrs={
                 "placeholder": "Enter Valid location",
             }),
-
-            'image': forms.ClearableFileInput(),
         }
     
     def __init__(self, *args, **kwargs):
@@ -82,12 +79,13 @@ class Create_Model_Category( For_Mixin, forms.ModelForm ):
 
 
 class Create_Model_User( For_Mixin, forms.ModelForm ):
+
     class Meta:
         model = Participant
         exclude = ['event']
 
-        widget = {
-            'email': forms.EmailInput()
+        widgets = {
+            'user_email': forms.EmailInput()
         }
 
     def __init__(self, *args, **kwargs):
