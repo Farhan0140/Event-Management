@@ -17,11 +17,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from debug_toolbar.toolbar import debug_toolbar_urls
-from app_admin.views import test, organizer_dashboard, create_event, details
+from app_admin.views import test, organizer_dashboard, create_event, details, update_event, delete_event
 
 urlpatterns = [
     path('', test),
     path('details/', details, name="details"),
     path('organizer_dashboard/', organizer_dashboard, name="organizer_dashboard"),
     path('create_event/', create_event, name="create_event"),
+    path('update_event/<int:id>/', update_event, name="update_event"),
+    path('delete_event/<int:id>/', delete_event, name="delete_event"),
 ] + debug_toolbar_urls()

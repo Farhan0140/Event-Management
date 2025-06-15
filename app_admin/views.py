@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.db.models import Q, Count
@@ -101,7 +101,7 @@ def organizer_dashboard(request):
     if category_selector != None:
         event_name = "Categories"
         events = None
-        category_events = Category.objects.get(id=category_selector)
+        category_events = Category.objects.get(id=category_selector).events.all().prefetch_related('participants')
     elif type == 'upcoming_events':
         events = events.filter(date__gt = date.today())
         event_name = "Upcoming Events"
@@ -177,3 +177,48 @@ def create_event(request):
 
 
     return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+
+
+def update_event(request, id):
+
+    event = Event.objects.get(id = id) 
+
+    event_form = Create_Model_Event(instance=event)
+    category_form = Create_Model_Category(instance=event.category)
+
+    if request.method == "POST":
+        event_form = Create_Model_Event(request.POST, instance=event)
+        category_form = Create_Model_Category(request.POST, instance=event.category)
+
+        if event_form.is_valid() and category_form.is_valid():
+            cln_data = category_form.cleaned_data
+            ctg_name = cln_data['category_name'].lower()
+            obj = Category.objects.filter(category_name__iexact=ctg_name)
+
+            if not obj.exists():
+                category = category_form.save()
+                event = event_form.save(commit=False)
+                event.category = category
+                event.save()
+                messages.success(request, "Event Update Successfully")
+                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+            else:
+                id = obj.first().id
+                objt = Category.objects.get(id=id)
+                event = event_form.save(commit=False)
+                event.category = objt
+                event.save()
+                messages.success(request, "Event Update Successfully")
+                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+
+
+    return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+
+
+def delete_event(request, id):
+    if request.method == "POST":
+        event = Event.objects.get(id = id) 
+        event.delete()
+        messages.success(request, "Event Deleted Successfully")
+    
+    return redirect('organizer_dashboard')
