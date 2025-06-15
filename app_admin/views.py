@@ -6,7 +6,6 @@ from app_admin.models import Category, Event, Participant
 from datetime import date
 from app_admin.forms import Create_Model_Event, Create_Model_Category, Create_Model_User
 
-# Create your views here.
 
 def test(request):
     return render(request, "test.html")
@@ -41,14 +40,13 @@ def details(request):
                     return render(request, "create_user.html", context)
 
                 else:
-                    # id = email_from_db.first().id
-                     
                     already_registered = email_from_db.prefetch_related('event').filter(event__id=event.id)
                     if already_registered:
                         messages.info(request, "You Registered This Event Already")
                         return render(request, "create_user.html", context)
                     else:
-                        user = user_form.save()
+                        user = user_form.cleaned_data
+                        user = Participant.objects.get(user_email = email)
                         user.event.add(event)
                         messages.info(request, "Registration Complete Successful For this Event")
                         return render(request, "create_user.html", context)
@@ -72,11 +70,6 @@ def details(request):
             'total_participant': total_participant['p_cnt']
         }
 
-
-    # if request.method == 'POST':
-
-
-    # print(total_participant)
     return render(request, "dashboard/details.html", context)
 
 
