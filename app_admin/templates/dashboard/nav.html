@@ -17,7 +17,7 @@
               <div class="lg:flex lg:items-center">
                 <img width="300px" src="{% static "images/nav_logo.png" %}" alt="">
                 <div class="flex lg:mt-0 sm:mt-4 w-full">
-                    <a href="#" class="rounded-lg p-2 bg-blue-700 px-3 hover:bg-blue-600">Home</a>
+                    <a href="{% url "home" %}" class="rounded-lg p-2 bg-blue-700 px-3 hover:bg-blue-600">Home</a>
                     <a href="{% url 'organizer_dashboard' %}?type=todays_events" class="rounded-lg p-2 ml-5 bg-blue-700 px-3 hover:bg-blue-600">Todays Events</a>
                     <a href="{% url "create_event" %}" class="rounded-lg p-2 ml-5 bg-blue-700 px-3 hover:bg-blue-600">Create Event</a>
                 </div>
