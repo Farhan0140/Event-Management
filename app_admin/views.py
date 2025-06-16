@@ -305,3 +305,17 @@ def delete_category(request, id):
         messages.success(request, "Category Deleted Successfully")
     
     return redirect('category_details')
+
+
+def search_event(request):
+
+    search_txt = request.GET.get('search')
+
+    search_result_by_name = Event.objects.filter(event_name__icontains=search_txt)
+    search_result_by_location = Event.objects.filter(location__icontains=search_txt)
+    context = {
+        'search_result_by_name': search_result_by_name,
+        'search_result_by_location': search_result_by_location,
+    }
+
+    return render(request, "search_events.html", context)

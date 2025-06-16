@@ -1,0 +1,88 @@
+
+
+{% extends "dashboard/nav.html" %}
+
+{% block for_main %}
+
+{% load static %}
+
+<h1 class="font-bold text-5xl my-5">Matched with Event name</h1>
+<div class="grid md:grid-cols-1 lg:grid-cols-2 grid-cols-1 gap-4">
+    {% for event in search_result_by_name %}
+            
+        <div class="box bg-white h-45 rounded-md shadow-xl sm:flex">
+        <div class="p-5 h-48 sm:w-2/5 rounded-lg" style="background-image: url('{% static 'images/music-event.png' %}'); background-size: cover; background-repeat: no-repeat;">
+            {% comment %} image {% endcomment %}
+        </div>
+        <div class="h-45 sm:w-3/5 mr-3 py-2 px-5 flex flex-col justify-between">
+            <p class="font-semibold text-2xl">Title: {{ event.event_name }} </p>
+            <p>Category: {{ event.category.category_name }} </p>
+            <p>To be held: {{ event.date }} at {{ event.time }} </p>
+            <p>Participant: {{ event.participants.all.count }} </p>
+            <a href="{% url "details" %}?dtl={{event.id}}" class="w-full my-1">
+            <div class="h-10 flex items-center justify-center text-white bg-blue-700 hover:bg-blue-600 rounded-lg">
+                Book Now & Details
+            </div>
+            </a>
+            <div class="sm:flex xl:flex-row lg:flex-col gap-2">
+            <a href="{% url 'update_event' event.id %}" class="xl:w-3/5 lg:w-full md:w-3/5">
+                <div class="h-10 flex items-center justify-center rounded-lg bg-green-700 hover:bg-green-500 text-white">
+                Edit
+                </div>
+            </a>
+            <div class="xl:w-2/5 lg:w-full md:w-2/5">
+                <form action="{% url 'delete_event' event.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="w-full h-10 flex items-center justify-center  text-white bg-red-700 hover:bg-red-500 rounded-lg">
+                    Delete
+                </button>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    {% endfor %}
+</div>
+
+<h1 class="font-bold text-5xl my-5">Matched with Event Location</h1>
+<div class="grid md:grid-cols-1 lg:grid-cols-2 grid-cols-1 gap-4">
+    {% for event in search_result_by_location %}
+            
+        <div class="box bg-white h-45 rounded-md shadow-xl sm:flex">
+        <div class="p-5 h-48 sm:w-2/5 rounded-lg" style="background-image: url('{% static 'images/music-event.png' %}'); background-size: cover; background-repeat: no-repeat;">
+            {% comment %} image {% endcomment %}
+        </div>
+        <div class="h-45 sm:w-3/5 mr-3 py-2 px-5 flex flex-col justify-between">
+            <p class="font-semibold text-2xl">Title: {{ event.event_name }} </p>
+            <p>Category: {{ event.category.category_name }} </p>
+            <p>To be held: {{ event.date }} at {{ event.time }} </p>
+            <p>Participant: {{ event.participants.all.count }} </p>
+            <a href="{% url "details" %}?dtl={{event.id}}" class="w-full my-1">
+            <div class="h-10 flex items-center justify-center text-white bg-blue-700 hover:bg-blue-600 rounded-lg">
+                Book Now & Details
+            </div>
+            </a>
+            <div class="sm:flex xl:flex-row lg:flex-col gap-2">
+            <a href="{% url 'update_event' event.id %}" class="xl:w-3/5 lg:w-full md:w-3/5">
+                <div class="h-10 flex items-center justify-center rounded-lg bg-green-700 hover:bg-green-500 text-white">
+                Edit
+                </div>
+            </a>
+            <div class="xl:w-2/5 lg:w-full md:w-2/5">
+                <form action="{% url 'delete_event' event.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="w-full h-10 flex items-center justify-center  text-white bg-red-700 hover:bg-red-500 rounded-lg">
+                    Delete
+                </button>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    {% endfor %}
+</div>
+
+
+{% endblock for_main %}

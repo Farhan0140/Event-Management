@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from debug_toolbar.toolbar import debug_toolbar_urls
-from app_admin.views import test, organizer_dashboard, create_event, details, update_event, delete_event, delete_participant, participants_details, edit_participants_details, category_details, edit_category_details, delete_category
+from app_admin.views import test, organizer_dashboard, create_event, details, update_event, delete_event, delete_participant, participants_details, edit_participants_details, category_details, edit_category_details, delete_category, search_event
 
 urlpatterns = [
     path('', test),
@@ -32,4 +32,5 @@ urlpatterns = [
     path('delete_participant/<int:id>/', delete_participant, name="delete_participant"),
     path('delete_category/<int:id>/', delete_category, name="delete_category"),
     path('edit_participants_details/<int:id>/', edit_participants_details, name="edit_participants_details"),
+    path('search_event/', search_event, name="search_event"),
 ] + debug_toolbar_urls()

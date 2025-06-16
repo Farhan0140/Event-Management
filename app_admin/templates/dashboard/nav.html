@@ -23,8 +23,8 @@
                 </div>
               </div>
               <div class="mr-4 xs:border">
-                <form action="" method="">
-                  <input type="text" class="rounded-lg p-2 text-black bg-gray-200 lg:w-auto sm:w-full w-full focus:border-gray-500 focus:outline focus:outline-gray-500 placeholder:italic" placeholder="Search">
+                <form action="{% url "search_event" %}" method="GET">
+                  <input type="text" name="search" class="rounded-lg p-2 text-black bg-gray-200 lg:w-auto sm:w-full w-full focus:border-gray-500 focus:outline focus:outline-gray-500 placeholder:italic" placeholder="Search">
                   <button type="submit" class="rounded-lg p-2 lg:ml-3 bg-blue-700 px-3 lg:w-auto lg:mt-auto sm:w-full sm:mt-2 w-full hover:bg-blue-600">Search</button>
                 </form>
               </div>
