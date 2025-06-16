@@ -11,7 +11,7 @@
               <div class="p-5 h-45 w-4/5 flex flex-col justify-between">
                 <h1 class="font-medium text-2xl text-gray-500">Total Participant</h1>
                 <h1 class="text-5xl font-semibold"> {{ counts.total_participant }} </h1>
-                <h1 class="text-gray-500">.</h1>
+                <a href="{% url "participants_details" %}" class="ring-2 border py-1 px-3 rounded-lg bg-blue-600 text-white hover:bg-blue-300 hover:text-black hover:font-bold"> Manage Participants </a>
               </div>
               <div class="h-45 w-1/5 flex justify-center items-center mr-3">
                 <div class="for_icon_1 w-14 h-14 flex justify-center items-center rounded-full text-blue-600 bg-blue-100 hover:text-blue-100 hover:bg-blue-600 ">
@@ -98,6 +98,7 @@
                   {% endfor %}
                 </select>
                 <button type="submit" class="mr-2 h-full bg-slate-500 p-2 mx-3 rounded-md text-white">Filter</button>
+                <a href="{% url "category_details" %}" class="mr-2 h-full bg-blue-500 p-2 mx-3 rounded-md text-white">Edit Categories</a>
               </div>
             </form>
           </div>

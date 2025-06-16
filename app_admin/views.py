@@ -222,3 +222,86 @@ def delete_event(request, id):
         messages.success(request, "Event Deleted Successfully")
     
     return redirect('organizer_dashboard')
+
+
+def participants_details(request):
+    participants = Participant.objects.all()
+
+    context = {
+        "participants": participants
+    }
+
+    return render(request, "participants_details.html", context)
+
+
+
+def edit_participants_details(request, id):
+
+    participant = Participant.objects.get(id = id) 
+
+    user_form = Create_Model_User(instance = participant)
+
+    if request.method == "POST":
+        user_form = Create_Model_User(request.POST, instance = participant)
+
+        if user_form.is_valid():
+            user_form.save()
+            messages.success(request, "Account Updated Successfully")
+            return redirect('participants_details')
+
+
+    context = {
+        'user_form': user_form
+    }
+
+    return render(request, "edit_participants_details.html", context)
+
+
+
+def delete_participant(request, id):
+    if request.method == "POST":
+        participant = Participant.objects.get(id = id) 
+        participant.delete()
+        messages.success(request, "participant Deleted Successfully")
+    
+    return redirect('participants_details')
+
+
+def category_details(request):
+    categories = Category.objects.all()
+
+    context = {
+        "categories": categories
+    }
+
+    return render(request, "category_details.html", context)
+
+
+def edit_category_details(request, id):
+
+    category = Category.objects.get(id = id) 
+    category_form = Create_Model_Category(instance = category)
+
+    if request.method == "POST":
+        category_form = Create_Model_Category(request.POST, instance = category)
+
+        if category_form.is_valid():
+            category_form.save()
+            messages.success(request, "Category Updated Successfully")
+            return redirect('category_details')
+
+
+    context = {
+        'category_form': category_form
+    }
+
+    return render(request, "edit_category.html", context)
+
+
+def delete_category(request, id):
+    if request.method == "POST":
+        category = Category.objects.get(id = id) 
+        category.delete()
+        messages.success(request, "Category Deleted Successfully")
+    
+    return redirect('category_details')

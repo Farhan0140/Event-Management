@@ -1,0 +1,27 @@
+
+{% extends "dashboard/nav.html" %}
+
+{% block for_main %}
+
+<div class="flex items-center justify-center mb-10">
+  <div class=" w-2/3 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="p-3 text-center rounded-lg font-bold border w-full text-white {% if 'success' in message.tags %}bg-green-700{% endif %} {% if 'error' in message.tags %}bg-red-800{% endif %} {% if 'info' in message.tags %}bg-red-400{% endif %}">
+            {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    <form method="POST">
+
+      {% csrf_token %}
+
+      {{ category_form.as_p }}
+
+      <button type="submit" class="bg-blue-900 p-3 w-full rounded-lg text-white font-bold">Submit</button>
+    </form>
+  </div>
+  <div class="hidden p-2 w-4/5 my-4 mx-2 bg-green-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 placeholder:text-black"></div>
+</div>
+
+{% endblock for_main %}

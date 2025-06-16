@@ -1,0 +1,38 @@
+
+{% extends "dashboard/nav.html" %}
+
+
+{% block for_main %}
+    
+    
+<div class="flex items-center justify-center">
+
+    <div class="border-3 border-black rounded-lg p-5 lg:w-1/2 w-5/6 bg-stone-300 shadow-2xl/30">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-3 p-3 text-center rounded-lg font-bold border w-full text-white {% if 'success' in message.tags %} bg-green-700{% endif %}"> {{ message }} </div>
+            {% endfor %}
+        {% endif %}
+
+        {% for category in categories %}
+            <div class="flex flex-col md:flex-row md:justify-between items-center border-b-2 py-2 hover:bg-gray-400 rounded-lg">
+                <div>
+                    <h1 class="font-bold text-lg ml-2"> {{ category.category_name }} </h1>
+                </div>
+
+                <div class="flex gap-3">
+                    <a href="{% url "edit_category" category.id %}" class="ring-2 border py-1 px-3 rounded-lg bg-blue-600 text-white hover:bg-blue-300 hover:text-black hover:font-bold"> Edit </a>
+
+                    <form action="{% url "delete_category" category.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="ring-2 border py-1 px-3 rounded-lg bg-red-600 text-white hover:bg-red-300 hover:text-black hover:font-bold mr-2"> Delete </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock for_main %}
+
