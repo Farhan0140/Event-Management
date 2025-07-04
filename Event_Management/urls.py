@@ -7,4 +7,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', organizer_dashboard, name="home"),
     path("organizer/", include("app_admin.urls")),
+    path("user/", include("user.urls")),
 ] + debug_toolbar_urls()

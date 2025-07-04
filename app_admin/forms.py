@@ -3,6 +3,10 @@ from django import forms
 from app_admin.models import Participant, Category, Event
 
 class For_Mixin:
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.apply_mixin()
+        
     default_classes = "p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
 
     def apply_mixin(self):
@@ -17,6 +21,10 @@ class For_Mixin:
                     'class': f"{self.default_classes} w-full",
                     'rows': 3,
                     'style': 'resize: none',
+                })
+            elif isinstance(field.widget, forms.PasswordInput):
+                field.widget.attrs.update({
+                    'class': f"{self.default_classes} w-full",
                 })
             elif isinstance(field.widget, forms.SelectDateWidget):
                 field.widget.attrs.update({
@@ -54,10 +62,6 @@ class Create_Model_Event( For_Mixin, forms.ModelForm ):
                 "placeholder": "Enter Valid location",
             }),
         }
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.apply_mixin()
 
 
 
@@ -71,10 +75,7 @@ class Create_Model_Category( For_Mixin, forms.ModelForm ):
                 "placeholder": "Enter Valid Description about Category:",
             }),
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.apply_mixin()
+    
 
 
 
@@ -87,7 +88,4 @@ class Create_Model_User( For_Mixin, forms.ModelForm ):
         widgets = {
             'user_email': forms.EmailInput()
         }
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.apply_mixin() 
+    
