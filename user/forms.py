@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from app_admin.forms import For_Mixin
 import re
+from django.contrib.auth.forms import AuthenticationForm
 
 
 class Register_Form(For_Mixin, forms.ModelForm):
@@ -57,3 +58,8 @@ class Register_Form(For_Mixin, forms.ModelForm):
         
         return email_from_user
 
+
+class sign_in_form(For_Mixin, AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    

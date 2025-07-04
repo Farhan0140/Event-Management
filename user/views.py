@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import login, logout
+from user.forms import Register_Form, sign_in_form
 
 # Create your views here.
 
-from user.forms import Register_Form
 
 def user_registration(request):
     form = Register_Form()
@@ -21,4 +22,28 @@ def user_registration(request):
         "form": form,
     }
 
-    return render(request, "user_authentication/registration.html", context)
+    return render(request, "user_authentication/registration_form.html", context)
+
+
+def sign_up(request):
+    form = sign_in_form()
+
+    if request.method == 'POST':
+        form = sign_in_form(data=request.POST)
+
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+
+            return redirect("#")
+
+    context = {
+        'form': form,
+    }
+    return render(request, "user_authentication/login_form.html", context)
+
+
+def sign_out(request):
+    if request.method == 'POST':
+        logout(request)
+        return redirect('sign-in')
