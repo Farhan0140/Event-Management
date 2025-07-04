@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_admin',
+    'core',
     "debug_toolbar",
 ]
 
