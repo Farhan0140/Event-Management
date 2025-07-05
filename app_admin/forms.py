@@ -45,7 +45,7 @@ class For_Mixin:
 class Create_Model_Event( For_Mixin, forms.ModelForm ):
     class Meta:
         model = Event
-        exclude = ['category']
+        exclude = ['category', 'participant']
 
         widgets = {
             'description': forms.Textarea(attrs={

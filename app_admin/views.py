@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db.models import Q, Count
 from app_admin.models import Category, Event
 from datetime import date
-from app_admin.forms import Create_Model_Event, Create_Model_Category, Create_Model_User
+from app_admin.forms import Create_Model_Event, Create_Model_Category
 
 
 def test(request):
@@ -151,7 +151,7 @@ def create_event(request):
     category_form = Create_Model_Category()
 
     if request.method == "POST":
-        event_form = Create_Model_Event(request.POST)
+        event_form = Create_Model_Event(request.POST, request.FILES)
         category_form = Create_Model_Category(request.POST)
 
         if event_form.is_valid() and category_form.is_valid():

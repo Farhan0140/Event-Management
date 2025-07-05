@@ -33,7 +33,6 @@
             <ul id="navMenu" class="md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-blue-900 w-full left-0 md:w-auto py-4 pl-3 md:py-0 md:pl-0 opacity-0 md:opacity-100 top-[-400px] transition-all ease-in duration-500">
               <li class="mx-4 my-6 md:hidden">
                     <div class="text-white">
-                        <img id="userAvatar" src="" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-white" />
                         <p class="text-xl font-semibold">{{ request.user.username }}</p>
                     </div>
               </li>
@@ -41,8 +40,8 @@
               <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">About</a></li>
               <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">Contact</a></li>
               
-              <div class="relative mx-4 hidden md:block" id="userMenuWrapper">
-                  <img id="userAvatar" src="" alt="User Avatar" class="w-10 h-10 rounded-full cursor-pointer border-2 border-white" onclick="toggleUserMenu()" />
+              <div id="UserName" class="relative mx-4 hidden md:block" id="userMenuWrapper">
+                  <div class="w-10 h-10 rounded-full cursor-pointer border-2 bg-sky-500 flex items-center justify-center text-white font-semibold" onclick="toggleUserMenu()">FA</div>
                     
                   <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg hidden z-50">
                       <ul class="py-2 text-gray-700">
