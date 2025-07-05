@@ -31,31 +31,13 @@
           </div>
 
             <ul id="navMenu" class="md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-blue-900 w-full left-0 md:w-auto py-4 pl-3 md:py-0 md:pl-0 opacity-0 md:opacity-100 top-[-400px] transition-all ease-in duration-500">
-              <li class="mx-4 my-6 md:hidden">
-                    <div class="text-white">
-                        <img id="userAvatar" src="" alt="User Avatar" class="w-10 h-10 rounded-full border-2 border-white" />
-                        <p class="text-xl font-semibold">{{ request.user.username }}</p>
-                    </div>
-              </li>
               <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer font-semibold" href="#">Dashboard</a></li>
               <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">About</a></li>
               <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">Contact</a></li>
-              
-              <div class="relative mx-4 hidden md:block" id="userMenuWrapper">
-                  <img id="userAvatar" src="" alt="User Avatar" class="w-10 h-10 rounded-full cursor-pointer border-2 border-white" onclick="toggleUserMenu()" />
-                    
-                  <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg hidden z-50">
-                      <ul class="py-2 text-gray-700">
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer font-medium">{{ request.user.username }}</li>
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                            <a href="">Log Out</a>
-                        </li>
-                      </ul>
-                  </div>
-              </div>
 
-              <li><a href="" class="block mt-2 text-white underline md:hidden">Log Out</a></li>
-
+              <button class="mx-4 px-5 py-2 bg-sky-700 text-white duration-500 hover:bg-sky-600 rounded-lg">
+                Sign Up
+              </button>
             </ul>
         </nav>
     </header>
@@ -79,19 +61,6 @@
           menu.classList.toggle("top-[60px]");
         }
       }
-
-      const toggleUserMenu = () => {
-        const dropdown = document.getElementById("userDropdown");
-        dropdown.classList.toggle("hidden");
-      };
-
-      window.addEventListener('click', function(e) {
-          const wrapper = document.getElementById('userMenuWrapper');
-          const dropdown = document.getElementById('userDropdown');
-          if (!wrapper.contains(e.target)) {
-              dropdown.classList.add('hidden');
-          }
-      });
   </script>
 
   </body>

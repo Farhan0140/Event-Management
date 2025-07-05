@@ -8,7 +8,7 @@ from app_admin.forms import Create_Model_Event, Create_Model_Category, Create_Mo
 
 
 def test(request):
-    return render(request, "test.html")
+    return render(request, "user_nav/logged_nav.html")
 
 def details(request):
 
