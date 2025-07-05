@@ -1,6 +1,5 @@
 from django.db import models
-
-# Create your models here.
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -21,10 +20,3 @@ class Event(models.Model):
     )
     
 
-class Participant(models.Model):
-    user_name = models.CharField(max_length=100)
-    user_email = models.EmailField(max_length=100) # For using unique=True I got Some Error, Thats why i remove it
-    event = models.ManyToManyField(
-        Event,
-        related_name="participants"
-    )

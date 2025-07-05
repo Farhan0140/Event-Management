@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import messages
 from django.db.models import Q, Count
-from app_admin.models import Category, Event, Participant
+from app_admin.models import Category, Event
 from datetime import date
 from app_admin.forms import Create_Model_Event, Create_Model_Category, Create_Model_User
 
@@ -11,68 +11,69 @@ def test(request):
     return render(request, "user_nav/logged_nav.html")
 
 def details(request):
+    pass
 
-    if request.GET.get('book_now'):
-        id = request.GET.get('book_now')
-        event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
-        total_participant = event.participants.aggregate(p_cnt = Count('id'))
-        user_form = Create_Model_User()
-        context = {
-            'event': event,
-            'total_participant': total_participant['p_cnt'],
-            'user_form': user_form
-        }
+#     if request.GET.get('book_now'):
+#         id = request.GET.get('book_now')
+#         event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
+#         total_participant = event.participants.aggregate(p_cnt = Count('id'))
+#         user_form = Create_Model_User()
+#         context = {
+#             'event': event,
+#             'total_participant': total_participant['p_cnt'],
+#             'user_form': user_form
+#         }
 
-        if request.method == "POST":
-            user_form = Create_Model_User(request.POST)
+#         if request.method == "POST":
+#             user_form = Create_Model_User(request.POST)
 
-            if user_form.is_valid():
+#             if user_form.is_valid():
 
-                cln_data = user_form.cleaned_data
-                print(cln_data)
-                email = cln_data['user_email'].lower()
-                email_from_db = Participant.objects.filter(user_email__iexact=email)
-                print(email, email_from_db)
+#                 cln_data = user_form.cleaned_data
+#                 print(cln_data)
+#                 email = cln_data['user_email'].lower()
+#                 email_from_db = Participant.objects.filter(user_email__iexact=email)
+#                 print(email, email_from_db)
                 
-                if not email_from_db:
-                    user = user_form.save()
-                    user.event.add(event)
+#                 if not email_from_db:
+#                     user = user_form.save()
+#                     user.event.add(event)
 
-                    messages.success(request, "Account created & Booked Successfully")
-                    return render(request, "create_user.html", context)
+#                     messages.success(request, "Account created & Booked Successfully")
+#                     return render(request, "create_user.html", context)
 
-                else:
-                    already_registered = email_from_db.prefetch_related('event').filter(event__id=event.id)
-                    if already_registered:
-                        messages.info(request, "You Registered This Event Already")
-                        return render(request, "create_user.html", context)
-                    else:
-                        user = user_form.cleaned_data
-                        user = Participant.objects.get(user_email = email)
-                        user.event.add(event)
-                        messages.info(request, "Registration Complete Successful For this Event")
-                        return render(request, "create_user.html", context)
+#                 else:
+#                     already_registered = email_from_db.prefetch_related('event').filter(event__id=event.id)
+#                     if already_registered:
+#                         messages.info(request, "You Registered This Event Already")
+#                         return render(request, "create_user.html", context)
+#                     else:
+#                         user = user_form.cleaned_data
+#                         user = Participant.objects.get(user_email = email)
+#                         user.event.add(event)
+#                         messages.info(request, "Registration Complete Successful For this Event")
+#                         return render(request, "create_user.html", context)
                 
-            else:
-                messages.error(request, "Enter Valid Email [ example@example.example ] ")
-                return render(request, "create_user.html", context)
+#             else:
+#                 messages.error(request, "Enter Valid Email [ example@example.example ] ")
+#                 return render(request, "create_user.html", context)
 
 
 
-        return render(request, "create_user.html", context)
+#         return render(request, "create_user.html", context)
     
-    else:
-        id = request.GET.get('dtl')
+#     else:
+#         id = request.GET.get('dtl')
 
-        event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
-        total_participant = event.participants.aggregate(p_cnt = Count('id'))
+#         event = Event.objects.select_related('category').prefetch_related('participants').get(id=id)
+#         total_participant = event.participants.aggregate(p_cnt = Count('id'))
 
-        context = {
-            'event': event,
-            'total_participant': total_participant['p_cnt']
-        }
+#         context = {
+#             'event': event,
+#             'total_participant': total_participant['p_cnt']
+#         }
 
-    return render(request, "dashboard/details.html", context)
+#     return render(request, "dashboard/details.html", context)
 
 
 def organizer_dashboard(request):
@@ -89,13 +90,13 @@ def organizer_dashboard(request):
     total_event = Event.objects.count()
     upcoming_events = Event.objects.filter(date__gt=date.today()).count()
     past_events = Event.objects.filter(date__lt=date.today()).count()
-    total_participant = Participant.objects.count()
+    # total_participant = Participant.objects.count()
 
     counts = {
         'total_event': total_event,
         'upcoming_events': upcoming_events,
         'past_events': past_events,
-        'total_participant': total_participant,
+        # 'total_participant': total_participant,
     }
 
     if category_selector != None:
@@ -225,46 +226,49 @@ def delete_event(request, id):
 
 
 def participants_details(request):
-    participants = Participant.objects.all()
+    # participants = Participant.objects.all()
 
-    context = {
-        "participants": participants
-    }
+    # context = {
+    #     "participants": participants
+    # }
 
-    return render(request, "participants_details.html", context)
+    # return render(request, "participants_details.html", context)
+    pass
 
 
 
 def edit_participants_details(request, id):
+    pass
 
-    participant = Participant.objects.get(id = id) 
+    # participant = Participant.objects.get(id = id) 
 
-    user_form = Create_Model_User(instance = participant)
+    # user_form = Create_Model_User(instance = participant)
 
-    if request.method == "POST":
-        user_form = Create_Model_User(request.POST, instance = participant)
+    # if request.method == "POST":
+    #     user_form = Create_Model_User(request.POST, instance = participant)
 
-        if user_form.is_valid():
-            user_form.save()
-            messages.success(request, "Account Updated Successfully")
-            return redirect('participants_details')
+    #     if user_form.is_valid():
+    #         user_form.save()
+    #         messages.success(request, "Account Updated Successfully")
+    #         return redirect('participants_details')
 
 
-    context = {
-        'user_form': user_form
-    }
+    # context = {
+    #     'user_form': user_form
+    # }
 
-    return render(request, "edit_participants_details.html", context)
+    # return render(request, "edit_participants_details.html", context)
 
 
 
 def delete_participant(request, id):
-    if request.method == "POST":
-        participant = Participant.objects.get(id = id) 
-        participant.delete()
-        messages.success(request, "participant Deleted Successfully")
+    pass
+    # if request.method == "POST":
+    #     participant = Participant.objects.get(id = id) 
+    #     participant.delete()
+    #     messages.success(request, "participant Deleted Successfully")
     
-    return redirect('participants_details')
+    # return redirect('participants_details')
 
 
 def category_details(request):

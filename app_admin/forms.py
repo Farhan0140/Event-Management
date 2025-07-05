@@ -1,6 +1,6 @@
 
 from django import forms
-from app_admin.models import Participant, Category, Event
+from app_admin.models import Category, Event
 
 class For_Mixin:
     def __init__(self, *args, **kwargs):
@@ -79,13 +79,13 @@ class Create_Model_Category( For_Mixin, forms.ModelForm ):
 
 
 
-class Create_Model_User( For_Mixin, forms.ModelForm ):
+# class Create_Model_User( For_Mixin, forms.ModelForm ):
 
-    class Meta:
-        model = Participant
-        exclude = ['event']
+#     class Meta:
+#         model = Participant
+#         exclude = ['event']
 
-        widgets = {
-            'user_email': forms.EmailInput()
-        }
+#         widgets = {
+#             'user_email': forms.EmailInput()
+#         }
     
