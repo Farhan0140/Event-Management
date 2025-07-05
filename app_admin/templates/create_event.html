@@ -1,7 +1,7 @@
 
-{% extends "dashboard/nav.html" %}
+{% extends "base.html" %}
 
-{% block for_main %}
+{% block organizer_content %}
 
 <div class="flex items-center justify-center mb-10">
   <div class=" w-2/3 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
@@ -16,12 +16,35 @@
 
       {{ event_form.as_p }}
       <hr class="my-5">
-      {{ category_form.as_p }}
+      {% comment %} {{ category_form.as_p }} {% endcomment %}
+
+      <label for="">Categories</label>
+      <select name="" id="" class="block p-3 my-3 rounded-lg focus:border-none border-black" onclick="set_category_name(this)">
+        {% for category in categories %}
+          <option value="{{category.category_name}}" >{{category.category_name}}</option>
+        {% endfor %}
+      </select>
+
+      {% if category_form.non_field_error %}
+        {% for error in category_form.non_field_error %}
+          {{error}}
+        {% endfor %}
+      {% endif %}
+
+      {% for field in category_form %}
+        <label for="">{{field.label}}</label>
+        {{field}}         {% comment %}       id_category_name {% endcomment %}
+
+        {% if field.error %}
+          {% for error in field.error %}
+            {{error}}
+          {% endfor %}
+        {% endif %}
+      {% endfor %}
 
       <button type="submit" class="bg-blue-900 p-3 w-full rounded-lg text-white font-bold">Submit</button>
     </form>
   </div>
-  <div class="hidden p-2 w-4/5 my-4 mx-2 bg-green-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 placeholder:text-black"></div>
 </div>
 
-{% endblock for_main %}
+{% endblock organizer_content %}

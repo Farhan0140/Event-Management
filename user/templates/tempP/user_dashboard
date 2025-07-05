@@ -1,9 +1,19 @@
-{% extends "base.html" %}
+{% extends "dashboard/nav.html" %}
 
-{% block organizer_content %}
+{% block for_main %}
 {% load static %}
+<main>
         <!-- Stats Grid -->
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-10 mb-10">
+
+          <!-- Participant -->
+            <div class="box bg-white h-48 rounded-md shadow-xl p-3">
+              <h1 class="font-medium text-2xl text-gray-500 mb-5">Update</h1>
+              <div class="flex flex-col gap-2 w-full">
+                <a href="{% url "create_event" %}" class="submit_button w-full rounded-lg">Create Event</a>
+                <a href="{% url "category_details" %}" class="submit_button w-full rounded-lg">Edit Categories</a>
+              </div>
+            </div>
 
           <!-- Events -->
           <a href="{% url 'organizer_dashboard' %}?type=all">
@@ -60,22 +70,16 @@
             </div>
           </a>
 
-          <!-- Update -->
-            <div class="box bg-white h-48 rounded-md shadow-xl p-3">
-              <h1 class="font-medium text-2xl text-gray-500 mb-2">Update</h1>
-              <div class="w-full flex justify-between gap-1 mb-2">
-                  <a href="{% url "create_event" %}" class="submit_button w-1/2 rounded-lg">Create Event</a>
-                  <a href="{% url "create_category" %}" class="submit_button w-1/2 rounded-lg">Create Categories</a>
-              </div>
-              <div class="flex flex-col gap-2 w-full">
-                <a href="{% url "category_details" %}" class="submit_button w-full rounded-lg">Edit Categories</a>
-              </div>
-            </div>
-
         </div>
         <!-- Stats Grid End -->
 
-        <div class="h-20">
+        {% if events %}
+          <h1 class="font-bold text-5xl mr-4"> {{ event_name }} </h1>
+        {% else %}
+          <h1 class="font-bold text-5xl mr-4"> {{ event_name }} : {{ category_events.category_name }} </h1>
+        {% endif %}
+
+        <div class="my-20 sm:my-10 sm:flex justify-between h-20">
           <div class="flex items-center">
             <form method="GET">
               <label for="tt" class="font-semibold py-4">Category</label>
@@ -86,16 +90,19 @@
                   {% endfor %}
                 </select>
                 <button type="submit" class="mr-2 h-full bg-slate-500 p-2 mx-3 rounded-md text-white">Filter</button>
+                <a href="{% url "category_details" %}" class="mr-2 h-full bg-blue-500 p-2 mx-3 rounded-md text-white">Edit Categories</a>
               </div>
             </form>
           </div>
-        </div>
 
-        {% if events %}
-          <h1 class="font-bold text-4xl mr-4 mb-10"> {{ event_name }} </h1>
-        {% else %}
-          <h1 class="font-bold text-4xl mr-4 mb-10"> {{ event_name }} : {{ category_name.first.category.category_name }} </h1>
-        {% endif %}
+          <div class="flex items-center">
+            <form method="GET">
+              <input type="date" name="st_date" class="h-full bg-slate-300 p-2 rounded-md" required> 
+              <input type="date" name="ed_date" class="h-full bg-slate-300 p-2 rounded-md" required> 
+              <button type="submit" class="mr-2 h-full bg-slate-500 p-2 rounded-md text-white">Filter</button>
+            </form>
+          </div>
+        </div>
 
         <!-- Events Listing -->
 
@@ -111,13 +118,18 @@
             {% for event in events %}
             
               <div class="box bg-white h-45 rounded-md shadow-xl sm:flex">
-                <div class="p-5 h-48 sm:w-2/5 rounded-lg" style="background-image: url('{{event.event_image.url}}'); background-size: cover; background-repeat: no-repeat;">
+                <div class="p-5 h-48 sm:w-2/5 rounded-lg" style="background-image: url('{% static 'images/music-event.png' %}'); background-size: cover; background-repeat: no-repeat;">
                 </div>
                 <div class="h-45 sm:w-3/5 mr-3 py-2 px-5 flex flex-col justify-between">
                   <p class="font-semibold text-2xl">Title: {{ event.event_name }} </p>
                   <p>Category: {{ event.category.category_name }} </p>
                   <p>To be held: {{ event.date }} at {{ event.time }} </p>
                   <p>Participant: {{ event.participants.all.count }} </p>
+                  <a href="{% url "details" %}?dtl={{event.id}}" class="w-full my-1">
+                    <div class="h-10 flex items-center justify-center text-white bg-blue-700 hover:bg-blue-600 rounded-lg">
+                      Book Now & Details
+                    </div>
+                  </a>
                   <div class="sm:flex xl:flex-row lg:flex-col gap-2">
                     <a href="{% url 'update_event' event.id %}" class="xl:w-3/5 lg:w-full md:w-3/5">
                       <div class="h-10 flex items-center justify-center rounded-lg bg-green-700 hover:bg-green-500 text-white">
@@ -143,7 +155,7 @@
             {% for event in category_events %}
               
               <div class="box bg-white h-45 rounded-md shadow-xl sm:flex">
-                <div class="p-5 h-48 sm:w-2/5 rounded-lg" style="background-image: url('{{event.event_image.url}}'); background-size: cover; background-repeat: no-repeat;">
+                <div class="p-5 h-48 sm:w-2/5 rounded-lg" style="background-image: url('{% static 'images/music-event.png' %}'); background-size: cover; background-repeat: no-repeat;">
                   {% comment %} image {% endcomment %}
                 </div>
                 <div class="h-45 sm:w-3/5 mr-3 py-2 px-5 flex flex-col justify-between">
@@ -151,6 +163,11 @@
                   <p>Category: {{ event.category.category_name }} </p>
                   <p>To be held: {{ event.date }} at {{ event.time }} </p>
                   <p>Participant: {{ event.participants.all.count }} </p>
+                  <a href="{% url "details" %}?dtl={{event.id}}" class="w-full my-1">
+                    <div class="h-10 flex items-center justify-center text-white bg-blue-700 hover:bg-blue-600 rounded-lg">
+                      Book Now & Details
+                    </div>
+                  </a>
                   <div class="sm:flex xl:flex-row lg:flex-col gap-2">
                     <a href="{% url "update_event" event.id %}" class="xl:w-3/5 lg:w-full md:w-3/5">
                       <div class="h-10 flex items-center justify-center rounded-lg bg-green-700 hover:bg-green-500 text-white">
@@ -172,6 +189,8 @@
             {% endfor %}
           </div>
          {% endif %}
-        
+        <!-- Events Listing End -->
 
-{% endblock organizer_content %}
+    </main>
+
+{% endblock for_main %}

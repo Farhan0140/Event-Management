@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .submit_button {
+        @apply px-4 py-2 bg-blue-600 text-white font-semibold text-lg hover:bg-blue-500;
+    }
+}

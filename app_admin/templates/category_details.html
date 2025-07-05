@@ -1,11 +1,11 @@
 
-{% extends "dashboard/nav.html" %}
+{% extends "base.html" %}
 
 
-{% block for_main %}
+{% block organizer_content %}
     
     
-<div class="flex items-center justify-center">
+<div class="flex items-center justify-center mt-10">
 
     <div class="border-3 border-black rounded-lg p-5 lg:w-1/2 w-5/6 bg-stone-300 shadow-2xl/30">
         {% if messages %}
@@ -34,5 +34,5 @@
 </div>
 
 
-{% endblock for_main %}
+{% endblock organizer_content %}
 

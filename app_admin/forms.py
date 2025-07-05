@@ -30,6 +30,10 @@ class For_Mixin:
                 field.widget.attrs.update({
                     'class': f"{self.default_classes} mx-2",
                 })
+            elif isinstance(field.widget, forms.ClearableFileInput):
+                field.widget.attrs.update({
+                    'class': f"{self.default_classes} mx-2 border-black",
+                })
             elif isinstance(field.widget, forms.TimeInput):
                 field.widget.attrs.update({
                     'class': f"{self.default_classes} w-full",
