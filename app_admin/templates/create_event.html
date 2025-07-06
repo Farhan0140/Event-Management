@@ -18,7 +18,7 @@
       <hr class="my-5">
       {% comment %} {{ category_form.as_p }} {% endcomment %}
 
-      <label for="">Categories</label>
+      <label for="">Select Category</label>
       <select name="" id="" class="block p-3 my-3 rounded-lg focus:border-none border-black" onclick="set_category_name(this)">
         {% for category in categories %}
           <option value="{{category.category_name}}" >{{category.category_name}}</option>

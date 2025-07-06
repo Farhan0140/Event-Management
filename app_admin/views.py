@@ -100,7 +100,7 @@ def create_event(request):
                 event.category = category
                 event.save()
                 messages.success(request, "Event Created Successfully")
-                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form, "categories":Category.objects.all()})
             else:
                 id = obj.first().id
                 objt = Category.objects.get(id=id)
@@ -108,7 +108,7 @@ def create_event(request):
                 event.category = objt
                 event.save()
                 messages.success(request, "Event Created Successfully")
-                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form, "categories":Category.objects.all()})
 
 
     return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form, "categories":Category.objects.all()})
