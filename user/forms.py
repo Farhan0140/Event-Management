@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from app_admin.forms import For_Mixin
 import re
 from django.contrib.auth.forms import AuthenticationForm
@@ -62,4 +62,14 @@ class Register_Form(For_Mixin, forms.ModelForm):
 class sign_in_form(For_Mixin, AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+class create_group_form(For_Mixin, forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = ['name', 'permissions']
+
+        widgets = {
+            "permissions": forms.CheckboxSelectMultiple()
+        }
     

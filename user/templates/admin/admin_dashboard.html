@@ -1,0 +1,49 @@
+{% extends "user_base.html" %}
+
+{% block user_content %}
+
+<div class="flex items-center justify-center mb-10">
+  <div class="lg:w-2/3 md:w-4/5 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="p-3 text-center rounded-lg font-bold border w-full text-white {% if 'success' in message.tags %} bg-green-700{% endif %} {% if 'error' in message.tags %}bg-red-800{% endif %}"> {{ message }} </div>
+      {% endfor %}
+    {% endif %}
+    
+    <div class="w-full">
+      <table class="w-full text-center table-auto overflow-scroll">
+        <thead>
+          <tr class="border-b-2 border-black">
+            <th class="border-b-2 border-black p-2">User Name</th>
+            <th class="border-b-2 border-black p-2">Full Name</th>
+            <th class="border-b-2 border-black p-2">Email</th>
+            <th class="border-b-2 border-black p-2">Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+            <tr>
+              <td class="border-b-2 border-black p-2">{{user.username}}</td>
+              <td class="border-b-2 border-black p-2">{{user.first_name}} {{user.last_name}}</td>
+              <td class="border-b-2 border-black p-2">{{user.email}}</td>
+              <td class="border-b-2 border-black p-2">{{ user.groups.first.name|default:"None" }}</td>
+              <td class="border-b-2 border-black p-2">
+                <div class="flex gap-2">
+                  <form action="{% url "assign_role" user.id %}">
+                    <button type="submit" class="submit_button rounded-lg">Change Role</button>
+                  </form>
+                  <form action="{% url "delete_user" user.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="delete_button rounded-lg">Delete User</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% endblock user_content %}

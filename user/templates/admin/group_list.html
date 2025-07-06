@@ -1,0 +1,54 @@
+{% extends "user_base.html" %}
+
+{% block user_content %}
+
+<div class="flex items-center justify-center mb-10">
+  <div class="lg:w-2/3 md:w-4/5 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
+
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="p-3 text-center rounded-lg font-bold border w-full text-white {% if 'success' in message.tags %} bg-green-700{% endif %} {% if 'error' in message.tags %}bg-red-800{% endif %}"> {{ message }} </div>
+      {% endfor %}
+    {% endif %}
+
+    
+    <div class="w-full">
+      <table class="w-full text-center table-auto overflow-scroll">
+        <thead>
+          <tr class="border-b-2 border-black">
+            <th class="border-b-2 border-black p-2">Group Name</th>
+            <th class="border-b-2 border-black p-2">Permissions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for group in groups %}
+            <tr>
+              <td class="border-r-2 border-b-2 border-black p-2"><span class="text-lg font-semibold">{{group.name}}</span></td>
+              <td class="border-b-2 border-black p-2">
+                    {% for permission in group.permissions.all %}
+                        <div class="border-b-2 border-gray-600 w-full py-2">{{permission}}</div>
+                    {% endfor %}
+              </td>
+              <td class="border-b-2 border-l-2 border-black">
+                  <div class="flex flex-col gap-2">
+                    <form action="{% url "update_role" group.id %}">
+                        <button type="submit" class="submit_button rounded-lg w-full">Edit</button>
+                    </form>
+                    <form action="{% url "delete_role" group.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="delete_button rounded-lg w-full">Delete</button>
+                    </form>
+                  </div>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+</div>
+
+{% endblock user_content %}
