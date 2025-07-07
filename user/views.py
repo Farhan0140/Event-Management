@@ -7,6 +7,7 @@ from django.contrib.auth.models import Group
 from app_admin.models import Event, Category
 from datetime import date
 from django.db.models import Count
+from django.contrib.auth.tokens import default_token_generator
 
 # Create your views here.
 
@@ -18,16 +19,31 @@ def user_registration(request):
         form = Register_Form(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
+            user.is_active = False
             user.set_password(form.cleaned_data['password'])
             user.save()
-            messages.success(request, "User Created Successfully")
-            return redirect("sign-up")
+            messages.success(request, "A confirmation mail send to your mail..")
+            return redirect("sign-in")
 
     context = {
         "form": form,
     }
 
     return render(request, "user_authentication/registration_form.html", context)
+
+
+def activate_user(request, user_id, token):
+    user = User.objects.get(id = user_id)
+    try:
+        if default_token_generator.check_token(user, token):
+            user.is_active = True
+            user.save()
+            return redirect('sign-in')
+        else:
+            messages.success(request, "Your account already registered, Please Login")
+            return redirect('sign-in')
+    except Exception as e:
+        print("User not found")
 
 
 def sign_up(request):
@@ -41,7 +57,7 @@ def sign_up(request):
             login(request, user)
 
             # return redirect("eikhane user jei group er oi dashboard e redirect korbe")
-            return redirect("organizer_dashboard")
+            return redirect("home")
 
     context = {
         'form': form,

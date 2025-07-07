@@ -1,6 +1,6 @@
 
 from django.urls import path
-from user.views import user_registration, sign_up, sign_out, show_all_user, assign_role, create_role, delete_user, group_lists, update_role, delete_role
+from user.views import user_registration, sign_up, sign_out, show_all_user, assign_role, create_role, delete_user, group_lists, update_role, delete_role, activate_user
 
 urlpatterns = [
     path("sign-up/", user_registration, name="sign-up"),
@@ -13,4 +13,5 @@ urlpatterns = [
     path("admin/groups/", group_lists, name="groups"), 
     path("admin/<int:group_id>/update_role/", update_role, name="update_role"),
     path("admin/<int:group_id>/delete_role/", delete_role, name="delete_role"),
+    path("activate/<int:user_id>/<str:token>/", activate_user, name="activate_user"),
 ]
