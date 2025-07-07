@@ -1,77 +1,46 @@
 
-{% load static %}
+{% extends "core_base.html" %}
 
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-  </head>
-  <body class="bg-stone-200 p-4">
-    <div class="max-w-[1400px] m-auto">
+{% block core_content %}
 
-    <header>
-        <nav>
-            <div class="lg:flex md:flex p-4 justify-between items-center bg-blue-900 text-white rounded-md">
-              <div class="lg:flex lg:items-center">
-                <img width="300px" src="{% static "images/nav_logo.png" %}" alt="">
-                <div class="flex lg:mt-0 sm:mt-4 w-full">
-                    <a href="{% url "home" %}" class="rounded-lg p-2 bg-blue-700 px-3 hover:bg-blue-600">Home</a>
-                    <a href="{% url 'organizer_dashboard' %}?type=todays_events" class="rounded-lg p-2 ml-5 bg-blue-700 px-3 hover:bg-blue-600">Todays Events</a>
-                    <a href="{% url "create_event" %}" class="rounded-lg p-2 ml-5 bg-blue-700 px-3 hover:bg-blue-600">Create Event</a>
-                </div>
-              </div>
-              <div class="mr-4 xs:border">
-                <form action="{% url "search_event" %}" method="GET">
-                  <input type="text" name="search" class="rounded-lg p-2 text-black bg-gray-200 lg:w-auto sm:w-full w-full focus:border-gray-500 focus:outline focus:outline-gray-500 placeholder:italic" placeholder="Search">
-                  <button type="submit" class="rounded-lg p-2 lg:ml-3 bg-blue-700 px-3 lg:w-auto lg:mt-auto sm:w-full sm:mt-2 w-full hover:bg-blue-600">Search</button>
-                </form>
-              </div>
-            </div>
-        </nav>
-    </header>
 
-    <main>
+<div class="flex items-center justify-center mb-10">
+    <div class=" w-2/3 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="p-3 text-center rounded-lg font-bold border w-full text-white {% if 'success' in message.tags %} bg-green-700{% endif %} {% if 'error' in message.tags %}bg-red-800{% endif %}"> {{ message }} </div>
+            {% endfor %}
+        {% endif %}
 
-        <div class="flex items-center justify-center mb-10">
-            <div class=" w-2/3 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="p-3 text-center rounded-lg font-bold border w-full text-white {% if 'success' in message.tags %} bg-green-700{% endif %} {% if 'error' in message.tags %}bg-red-800{% endif %}"> {{ message }} </div>
-                    {% endfor %}
-                {% endif %}
+        {% if form.non_field_errors %}
+            <ul>
+                {% for error in form.non_field_errors %}
+                    <li><div class="p-3 text-center rounded-lg font-bold border w-full text-white bg-red-800">{{error}} </div></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
 
-                {% if form.non_field_errors %}
-                    <ul>
-                        {% for error in form.non_field_errors %}
-                            <li><div class="p-3 text-center rounded-lg font-bold border w-full text-white bg-red-800">{{error}} </div></li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+        <form method="POST">
+        {% csrf_token %}
+            {% for field in form %}
+                <p>
+                    <label for="{{field.id_for_label}}"> {{ field.label }} </label>
+                    {{ field }}
 
-                <form method="POST">
-                {% csrf_token %}
-                    {% for field in form %}
-                        <p>
-                            <label for="{{field.id_for_label}}"> {{ field.label }} </label>
-                            {{ field }}
+                    {% if field.errors %}
+                        <ul>
+                            {% for error in field.errors %}
+                                <li class="text-red-500">* {{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </p>
+            {% endfor %}
 
-                            {% if field.errors %}
-                                <ul>
-                                    {% for error in field.errors %}
-                                        <li class="text-red-500">* {{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
-                        </p>
-                    {% endfor %}
-
-                    <button type="submit" class="bg-blue-900 p-3 w-full rounded-lg text-white font-bold">Submit</button>
-                </form>
-            </div>
-        </div>
-    </main>
+            <button type="submit" class="bg-blue-900 p-3 w-full rounded-lg text-white font-bold">Submit</button>
+        </form>
     </div>
-  </body>
-</html>
+</div>
+
+
+{% endblock core_content %}

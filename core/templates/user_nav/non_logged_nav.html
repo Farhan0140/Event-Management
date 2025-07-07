@@ -1,67 +1,34 @@
 
 {% load static %}
 
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-  </head>
-  <body class="bg-stone-200 md:p-4">
-    <div class="bg-blue-900">
-    <div class="max-w-[1400px] m-auto">
 
-    <header>
-        <nav class="p-2 shadow md:flex md:items-center md:justify-between">
-          <div class="flex justify-between items-center">
-            <span>
-              <img class="w-[200px] cursor-pointer" src="{% static "images/nav_logo_mini.png" %}" alt="">
-            </span>
+<nav class="p-2 shadow md:flex md:items-center md:justify-between bg-blue-900">
+  <div class="flex justify-between items-center">
+    <span>
+      <img class="w-[200px] cursor-pointer" src="{% static "images/nav_logo_mini.png" %}" alt="">
+    </span>
 
-            <span id="menu-toggle" class="md:hidden cursor-pointer" onclick="toggle_menu(this)">
-              <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                  class="size-8 text-white">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            </span>
+    <span id="menu-toggle" class="md:hidden cursor-pointer" onclick="toggle_menu(this)">
+      <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-8 text-white">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </span>
 
-          </div>
+  </div>
 
-            <ul id="navMenu" class="md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-blue-900 w-full left-0 md:w-auto py-4 pl-3 md:py-0 md:pl-0 opacity-0 md:opacity-100 top-[-400px] transition-all ease-in duration-500">
-              <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer font-semibold" href="#">Dashboard</a></li>
-              <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">About</a></li>
-              <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">Contact</a></li>
+    <ul id="navMenu" class="md:flex md:items-center z-50 md:z-auto md:static absolute bg-blue-900 w-full left-0 md:w-auto py-4 pl-3 md:py-0 md:pl-0 opacity-0 md:opacity-100 top-[-400px] transition-all ease-in duration-500">
+      <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">About US</a></li>
+      <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">Contact US</a></li>
 
-              <button class="mx-4 px-5 py-2 bg-sky-700 text-white duration-500 hover:bg-sky-600 rounded-lg">
-                Sign Up
-              </button>
-            </ul>
-        </nav>
-    </header>
+      <a href="{% url "sign-in" %}" class="mx-4 px-5 py-2 bg-sky-700 text-white duration-500 hover:bg-sky-600 rounded-lg">
+        Sign In
+      </a>
+      <a href="{% url "sign-up" %}" class="mx-4 px-5 py-2 bg-sky-700 text-white duration-500 hover:bg-sky-600 rounded-lg">
+        Sign Up
+      </a>
+    </ul>
+</nav>
 
-    
-    </div>
-    </div>
-
-    <script>
-      const toggle_menu = (el) => {
-        const icon = el.querySelector('svg')
-        const isMenu = icon.id === 'menu-icon'
-
-        icon.outerHTML = isMenu ? `<svg id="x-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-white"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /> </svg>` : `<svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-white"> <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /> </svg>`
-
-        const menu = document.getElementById("navMenu");
-        if (menu) {
-          menu.classList.toggle("opacity-0");
-          menu.classList.toggle("top-[-400px]");
-          menu.classList.toggle("opacity-100");
-          menu.classList.toggle("top-[60px]");
-        }
-      }
-  </script>
-
-  </body>
-</html>

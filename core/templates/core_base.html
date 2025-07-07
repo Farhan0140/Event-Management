@@ -13,16 +13,16 @@
 
         <header>
             {% if request.user.is_authenticated %}
-                {% include "organizer_nav/logged_nav.html" %}
+                {% include "user_nav/logged_nav.html" %}
             {% else %}
                 {% include "user_nav/non_logged_nav.html" %}
             {% endif %}
         </header>
 
         <main>
-            {% block organizer_content %}
+            {% block core_content %}
 
-            {% endblock organizer_content %}
+            {% endblock core_content %}
         </main>
 
         <footer class="bg-gray-800 text-white py-12 mt-10">
@@ -71,6 +71,8 @@
             <div class="border-t border-gray-700 mt-12 pt-8 text-sm text-center text-gray-400">
                 &copy; 2025 EventManagement. All rights reserved.
             </div>
+
+            <div class="hidden focus:outline-none focus:ring-0 focus:in_shadow"></div>
         </div>
     </footer>
     </div>
@@ -103,12 +105,6 @@
                 dropdown.classList.add('hidden');
             }
         });
-
-        const set_category_name = (e) => {
-            console.log(e.value);
-            let category_name = document.getElementById('id_category_name');
-            category_name.value = e.value;
-        }
     </script>
   </body>
 </html>

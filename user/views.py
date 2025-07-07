@@ -4,6 +4,9 @@ from django.contrib.auth import login, logout
 from user.forms import Register_Form, sign_in_form, create_group_form
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
+from app_admin.models import Event, Category
+from datetime import date
+from django.db.models import Count
 
 # Create your views here.
 
@@ -166,18 +169,137 @@ def group_lists(request):
     return render(request, "admin/group_list.html", context)
 
 
+# Participant Part
+
+def participant_dashboard(request):
+    user = User.objects.get(id=request.user.id)
+    events = user.rsvp_events.all()
+
+    context = {
+        "events": events,
+    }
+    
+    return render(request, "participant/dashboard.html", context)
 
 
 
 
 
+def events_list(request):
+
+    type = request.GET.get('type')
+    st_date = request.GET.get('st_date')
+    ed_date = request.GET.get('ed_date')
+    category_selector = request.GET.get('category_selector')
+
+    category_events = None
+
+    events = Event.objects.select_related('category').annotate(user_count=Count('participant'))
+
+    total_event = Event.objects.count()
+    upcoming_events = Event.objects.filter(date__gt=date.today()).count()
+    past_events = Event.objects.filter(date__lt=date.today()).count()
+
+    counts = {
+        'total_event': total_event,
+        'upcoming_events': upcoming_events,
+        'past_events': past_events,
+    }
+
+    if category_selector != None:
+        event_name = "Categories"
+        events = None
+        category_events = (Category.objects.get(id=category_selector).events.annotate(user_count=Count('participant')).select_related('category'))
+    elif type == 'upcoming_events':
+        events = events.filter(date__gt = date.today())
+        event_name = "Upcoming Events"
+    elif type == 'all':
+        events = events.all()
+        event_name = "All Events"
+    elif type == 'todays_events':
+        event_name = "Todays Events"
+        events = events.filter(date = date.today())
+    elif type == 'past_events':
+        events = events.filter(date__lt = date.today())
+        event_name = "Past Events"
+    else:
+        event_name = "In Range"
+        if st_date != None and ed_date != None:
+            if(st_date < ed_date):
+                s_d = st_date
+                l_d = ed_date
+            else:
+                l_d = st_date
+                s_d = ed_date
+            
+            events = events.filter(date__range=(s_d, l_d))
+        else:
+            event_name = "Todays Events"
+            events = events.filter(date = date.today())
+
+    user = User.objects.get(id=request.user.id)
+    user_event_list = user.rsvp_events.all()
+    user_events = [event.id  for event in user_event_list]
+
+    context = {
+        'events': events, 
+        'counts': counts,
+        'event_name': event_name,
+        'today': date.today(),
+        'categories': Category.objects.all(),
+        'category_events': category_events,
+        'user_events': user_events,
+    }
+
+    return render(request, "participant/events_list.html", context)
+
+
+def view_details(request, event_id):
+    user = User.objects.get(id=request.user.id)
+    event = Event.objects.get(id = event_id)
+
+    context = {
+        "event": event,
+        "is_rsvp": user.rsvp_events.filter(id=event_id).exists(),
+    }
+
+    return render(request, "participant/event_details.html", context)
 
 
 
+def rsvp(request, event_id):
+    user = User.objects.get(id=request.user.id)
+    event = Event.objects.get(id=event_id)
+
+    is_exist = user.rsvp_events.filter(id=event_id).exists()
+    print(is_exist)
+
+    if is_exist:
+        messages.error(request, "You already done RSVP in this event")
+        return redirect('events_list')
+    
+    event.participant.add(user)
+
+    messages.success(request, "Your RSVP successfully completed")
+    return redirect('events_list')
 
 
+def search_event(request):
+
+    search_txt = request.GET.get('search')
+
+    search_result_by_name = Event.objects.filter(event_name__icontains=search_txt)
+    search_result_by_location = Event.objects.filter(location__icontains=search_txt)
+    context = {
+        'search_result_by_name': search_result_by_name,
+        'search_result_by_location': search_result_by_location,
+    }
+
+    return render(request, "participant/search_box.html", context)
 
 
+def no_permission(request):
+    return render(request, "no_permission.html")
 
 
 
@@ -326,15 +448,3 @@ def edit_participants_details(request, id):
     # }
 
     # return render(request, "edit_participants_details.html", context)
-
-
-
-def delete_participant(request, id):
-    pass
-    # if request.method == "POST":
-    #     participant = Participant.objects.get(id = id) 
-    #     participant.delete()
-    #     messages.success(request, "participant Deleted Successfully")
-    
-    # return redirect('participants_details')
-

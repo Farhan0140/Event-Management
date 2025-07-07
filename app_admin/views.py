@@ -7,10 +7,6 @@ from datetime import date
 from app_admin.forms import Create_Model_Event, Create_Model_Category
 
 
-def test(request):
-    return render(request, "base.html")
-
-
 
 def organizer_dashboard(request):
 
@@ -222,7 +218,7 @@ def delete_category(request, id):
     return redirect('category_details')
 
 
-def search_event(request):
+def organizer_search_event(request):
 
     search_txt = request.GET.get('search')
 
@@ -233,4 +229,4 @@ def search_event(request):
         'search_result_by_location': search_result_by_location,
     }
 
-    return render(request, "search_events.html", context)
+    return render(request, "organizer_search_box.html", context)

@@ -11,3 +11,19 @@
         @apply px-4 py-2 bg-red-600 text-white font-semibold text-lg hover:bg-red-500;
     }
 }
+
+@layer utilities {
+    .b_shadow {
+        background: #dce0e6;
+        box-shadow: 5px 5px 10px #6a6b6d, -5px -5px 10px #ffffff, inset 3px 3px 6px #6a6b6d, inset -3px -3px 6px #ffffff;
+    }
+    
+    .in_shadow {
+        background: #e0e5ec;
+        box-shadow: inset 3px 3px 6px #6a6b6d, inset -3px -3px 6px #ffffff;
+    }
+
+    .h_shadow {
+        box-shadow: inset 3px 3px 6px #ffffff, inset -3px -3px 6px #6a6b6d, 5px 5px 10px #6a6b6d, -5px -5px 10px #ffffff;
+    }
+}

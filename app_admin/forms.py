@@ -7,7 +7,7 @@ class For_Mixin:
         super().__init__(*args, **kwargs)
         self.apply_mixin()
         
-    default_classes = "p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+    default_classes = "in_shadow focus:in_shadow p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
 
     def apply_mixin(self):
         for field_name, field in self.fields.items():
@@ -77,11 +77,11 @@ class Create_Model_Category( forms.ModelForm ):
         widgets = {
             'category_name': forms.TextInput(attrs={
                 'Placeholder': "Enter new name to create category",
-                'class': "p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full",
+                'class': "in_shadow focus:in_shadow p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full",
             }),
             'description': forms.Textarea(attrs={
                 "placeholder": "Enter Valid Description about Category:",
-                "class": "p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full",
+                "class": "in_shadow focus:in_shadow p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full",
                 'rows': 3,
                 'style': 'resize: none',
             }),

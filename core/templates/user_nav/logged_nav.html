@@ -1,97 +1,64 @@
 
 {% load static %}
 
-<!doctype html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static "css/output.css" %}">
-  </head>
-  <body class="bg-stone-200 md:p-4">
-    <div class="bg-blue-900">
-    <div class="max-w-[1400px] m-auto">
 
-    <header>
-        <nav class="p-2 shadow md:flex md:items-center md:justify-between">
-          <div class="flex justify-between items-center">
-            <span>
-              <img class="w-[200px] cursor-pointer" src="{% static "images/nav_logo_mini.png" %}" alt="">
-            </span>
+<nav class="p-4 shadow md:flex md:items-center md:justify-between bg-blue-900">
+  <div class="flex justify-between items-center">
+    <span>
+      <img class="w-[200px] cursor-pointer" src="{% static "images/nav_logo_mini.png" %}" alt="">
+    </span>
 
-            <span id="menu-toggle" class="md:hidden cursor-pointer" onclick="toggle_menu(this)">
-              <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
-                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                  class="size-8 text-white">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-              </svg>
-            </span>
+    <span id="menu-toggle" class="md:hidden cursor-pointer" onclick="toggle_menu(this)">
+      <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none"
+          viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="size-8 text-white">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </span>
 
+  </div>
+
+    <ul id="navMenu" class="md:flex md:items-center z-50 md:z-auto md:static absolute bg-blue-900 w-full left-0 md:w-auto py-4 pl-3 md:py-0 md:pl-0 opacity-0 md:opacity-100 top-[-400px] transition-all ease-in duration-500">
+      <li class="mx-4 my-6 md:hidden">
+            <div class="text-white">
+                <p class="text-xl font-semibold">{{ request.user.username }}</p>
+            </div>
+      </li>
+      <li class="mx-4 my-6 md:my-0"><a class="text-md text-white hover:underline cursor-pointer font-semibold" href="{% url "home" %}">Dashboard</a></li>
+      <li class="mx-4 my-6 md:my-0"><a class="text-md text-white hover:underline cursor-pointer" href="{% url 'events_list' %}?type=all">Today's Events</a></li>
+      <li class="mx-4 my-6 md:my-0"><a class="text-md text-white hover:underline cursor-pointer" href="{% url "home" %}">Manage Events</a></li>
+      
+      <div class="xs:border">
+          <form action="{% url "search_event" %}" method="GET">
+            <input type="text" name="search" class="rounded-lg p-2 text-black bg-gray-200 lg:w-auto sm:w-full w-full focus:border-gray-500 focus:outline focus:outline-gray-500 placeholder:italic" placeholder="Search">
+            <button type="submit" class="rounded-lg text-white p-2 lg:ml-3 bg-sky-500 px-3 lg:w-auto lg:mt-auto sm:w-full sm:mt-2 w-full hover:bg-sky-600">Search</button>
+          </form>
+      </div>
+
+      <div id="UserName" class="relative mx-4 hidden md:block" id="userMenuWrapper">
+        
+          <div class="w-10 h-10 rounded-full cursor-pointer border-2 bg-sky-500 flex items-center justify-center text-white font-semibold" onclick="toggleUserMenu()">{{request.user.username|upper|slice:":2"}}</div>
+            
+          <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg hidden z-50">
+              <ul class="py-2 text-gray-700">
+                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer font-medium">{{ request.user.username }}</li>
+                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+                  <form action="{% url "sign-out" %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="text-red-800">Log Out</button>
+                  </form>
+                </li>
+              </ul>
           </div>
+      </div>
 
-            <ul id="navMenu" class="md:flex md:items-center z-[-1] md:z-auto md:static absolute bg-blue-900 w-full left-0 md:w-auto py-4 pl-3 md:py-0 md:pl-0 opacity-0 md:opacity-100 top-[-400px] transition-all ease-in duration-500">
-              <li class="mx-4 my-6 md:hidden">
-                    <div class="text-white">
-                        <p class="text-xl font-semibold">{{ request.user.username }}</p>
-                    </div>
-              </li>
-              <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer font-semibold" href="#">Dashboard</a></li>
-              <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">About</a></li>
-              <li class="mx-4 my-6 md:my-0"><a class="text-xl text-white hover:underline cursor-pointer" href="#">Contact</a></li>
-              
-              <div id="UserName" class="relative mx-4 hidden md:block" id="userMenuWrapper">
-                  <div class="w-10 h-10 rounded-full cursor-pointer border-2 bg-sky-500 flex items-center justify-center text-white font-semibold" onclick="toggleUserMenu()">FA</div>
-                    
-                  <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg hidden z-50">
-                      <ul class="py-2 text-gray-700">
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer font-medium">{{ request.user.username }}</li>
-                        <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                            <a href="">Log Out</a>
-                        </li>
-                      </ul>
-                  </div>
-              </div>
+      <li>
+        <form action="{% url "sign-out" %}" method="POST">
+          {% csrf_token %}
+          <button type="submit" class="block mt-2 rounded-lg hover:underline md:hidden w-full px-4 py-2 bg-red-500 hover:bg-red-600 text-white">Log Out</button>
+        </form>
+      </li>
 
-              <li><a href="" class="block mt-2 text-white underline md:hidden">Log Out</a></li>
-
-            </ul>
-        </nav>
-    </header>
-
-    
-    </div>
-    </div>
-
-    <script>
-      const toggle_menu = (el) => {
-        const icon = el.querySelector('svg')
-        const isMenu = icon.id === 'menu-icon'
-
-        icon.outerHTML = isMenu ? `<svg id="x-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-white"> <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" /> </svg>` : `<svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-white"> <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /> </svg>`
-
-        const menu = document.getElementById("navMenu");
-        if (menu) {
-          menu.classList.toggle("opacity-0");
-          menu.classList.toggle("top-[-400px]");
-          menu.classList.toggle("opacity-100");
-          menu.classList.toggle("top-[60px]");
-        }
-      }
-
-      const toggleUserMenu = () => {
-        const dropdown = document.getElementById("userDropdown");
-        dropdown.classList.toggle("hidden");
-      };
-
-      window.addEventListener('click', function(e) {
-          const wrapper = document.getElementById('userMenuWrapper');
-          const dropdown = document.getElementById('userDropdown');
-          if (!wrapper.contains(e.target)) {
-              dropdown.classList.add('hidden');
-          }
-      });
-  </script>
-
-  </body>
-</html>
+    </ul>
+</nav>

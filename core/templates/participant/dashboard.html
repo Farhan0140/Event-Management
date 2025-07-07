@@ -1,0 +1,45 @@
+
+{% extends "core_base.html" %}
+
+{% block core_content %}
+{% load static %}
+<div class="flex items-center justify-center mb-10">
+<div class="w-full sm:w-4/5 md:w-2/3 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
+
+  <h1 class="text-center font-semibold text-3xl border-b-2 border-black pb-5">Your Registered Events</h1>
+
+  {% for event in events %}
+  <a href="">
+    <div class="mt-10 b_shadow rounded-lg">
+      <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
+        <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
+        <div class="flex items-center lg:ml-3 w-full">
+          <div class="p-2 gap-3 w-full">
+            <h1 class="font-semibold text-lg">Title: <span>{{event.event_name}}</span></h1>
+            <h5>Category: <span>{{event.category.category_name}}</span></h5>
+            <h5>Started at: {{event.date}}</h5>
+            <h5>Location: {{event.location}}</h5>
+          </div>
+        </div>
+        </div>
+      </div>
+    </a>
+    {% endfor %}   
+
+    <a href="{% url "events_list" %}">
+      <div class="flex justify-between items-center mt-10 mb-5 border-2 border-gray-500 hover:h_shadow transition duration-300 rounded-lg b_shadow px-10 py-3">
+        <div class="font-semibold text-xl"> See all events </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      </div>
+    </a>
+
+
+</div>
+</div>
+
+
+{% endblock core_content %}

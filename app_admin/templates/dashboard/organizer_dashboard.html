@@ -117,7 +117,6 @@
                   <p class="font-semibold text-2xl">Title: {{ event.event_name }} </p>
                   <p>Category: {{ event.category.category_name }} </p>
                   <p>To be held: {{ event.date }} at {{ event.time }} </p>
-                  <p>Participant: {{ event.participants.all.count }} </p>
                   <div class="sm:flex xl:flex-row lg:flex-col gap-2">
                     <a href="{% url 'update_event' event.id %}" class="xl:w-3/5 lg:w-full md:w-3/5">
                       <div class="h-10 flex items-center justify-center rounded-lg bg-green-700 hover:bg-green-500 text-white">
@@ -150,7 +149,6 @@
                   <p class="font-semibold text-2xl">Title: {{ event.event_name }} </p>
                   <p>Category: {{ event.category.category_name }} </p>
                   <p>To be held: {{ event.date }} at {{ event.time }} </p>
-                  <p>Participant: {{ event.participants.all.count }} </p>
                   <div class="sm:flex xl:flex-row lg:flex-col gap-2">
                     <a href="{% url "update_event" event.id %}" class="xl:w-3/5 lg:w-full md:w-3/5">
                       <div class="h-10 flex items-center justify-center rounded-lg bg-green-700 hover:bg-green-500 text-white">

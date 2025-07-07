@@ -1,0 +1,55 @@
+
+{% extends "core_base.html" %}
+
+{% block core_content %}
+{% load static %}
+<div class="flex items-center justify-center mb-10">
+<div class="w-full sm:w-4/5 md:w-2/3 p-5 rounded-xl mt-5 shadow-lg bg-slate-300">
+
+  <h1 class="text-center font-semibold text-3xl border-b-2 border-black pb-5">Matched with Event name</h1>
+
+  {% for event in search_result_by_name %}
+    <a href="">
+        <div class="mt-10 b_shadow rounded-lg">
+            <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
+                <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
+                <div class="flex items-center lg:ml-3 w-full">
+                    <div class="p-2 gap-3 w-full">
+                        <h1 class="font-semibold text-lg">Title: <span>{{event.event_name}}</span></h1>
+                        <h5>Category: <span>{{event.category.category_name}}</span></h5>
+                        <h5>Started at: {{event.date}}</h5>
+                        <h5>Location: {{event.location}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+  {% endfor %}
+  
+
+  <h1 class="text-center font-semibold text-3xl border-b-2 border-black pb-5 mt-10">Matched with Event Location</h1>
+
+  {% for event in search_result_by_location %}
+    <a href="">
+        <div class="mt-10 b_shadow rounded-lg">
+            <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
+                <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
+                <div class="flex items-center lg:ml-3 w-full">
+                    <div class="p-2 gap-3 w-full">
+                        <h1 class="font-semibold text-lg">Title: <span>{{event.event_name}}</span></h1>
+                        <h5>Category: <span>{{event.category.category_name}}</span></h5>
+                        <h5>Started at: {{event.date}}</h5>
+                        <h5>Location: {{event.location}}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+  {% endfor %}
+
+
+</div>
+</div>
+
+
+{% endblock core_content %}

@@ -1,0 +1,214 @@
+
+{% extends "core_base.html" %}
+
+{% block core_content %}
+
+  
+<!-- Stats Grid -->
+        <div class="xl:w-4/5 xl:m-auto">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 my-10">
+
+          <!-- Events -->
+          <a href="{% url 'events_list' %}?type=all">
+            <div class="box bg-white h-48 rounded-md shadow-xl flex">
+              <div class="p-5 h-45 w-4/5 flex flex-col justify-between hover:bg-gray-100">
+                <h1 class="font-medium text-2xl text-gray-500">Total Events</h1>
+                <h1 class="text-5xl font-semibold">{{ counts.total_event }}</h1>
+                <h1 class="text-gray-500">.</h1>
+              </div>
+              <div class="h-45 w-1/5 flex justify-center items-center mr-3">
+                <div class="for_icon_2 w-14 h-14 flex justify-center items-center rounded-full text-green-600 bg-green-100 hover:text-green-100 hover:bg-green-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-7">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 11.25v7.5m-9-6h.008v.008H12v-.008ZM12 15h.008v.008H12V15Zm0 2.25h.008v.008H12v-.008ZM9.75 15h.008v.008H9.75V15Zm0 2.25h.008v.008H9.75v-.008ZM7.5 15h.008v.008H7.5V15Zm0 2.25h.008v.008H7.5v-.008Zm6.75-4.5h.008v.008h-.008v-.008Zm0 2.25h.008v.008h-.008V15Zm0 2.25h.008v.008h-.008v-.008Zm2.25-4.5h.008v.008H16.5v-.008Zm0 2.25h.008v.008H16.5V15Z" />
+                  </svg>
+
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- upcoming events -->
+          <a href="{% url 'events_list' %}?type=upcoming_events">
+            <div class="box bg-white h-48 rounded-md shadow-xl flex ">
+              <div class="p-5 h-45 w-4/5 flex flex-col justify-between hover:bg-gray-100">
+                <h1 class="font-medium text-2xl text-gray-500">Upcoming Events</h1>
+                <h1 class="text-5xl font-semibold"> {{ counts.upcoming_events }} </h1>
+                <h1 class="text-gray-500">.</h1>
+              </div>
+              <div class="h-45 w-1/5 flex justify-center items-center mr-3">
+                <div class="for_icon_1 w-14 h-14 flex justify-center items-center rounded-full text-fuchsia-600 bg-fuchsia-100 hover:text-fuchsia-100 hover:bg-fuchsia-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-7">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </a>
+
+          <!-- Past events -->
+          <a href="{% url 'events_list' %}?type=past_events">
+            <div class="box bg-white h-48 rounded-md shadow-xl flex lg:col-start-2 md-col-start-2 xl:col-start-4">
+              <div class="p-5 h-45 w-4/5 flex flex-col justify-between hover:bg-gray-100">
+                <h1 class="font-medium text-2xl text-gray-500">Past Events</h1>
+                <h1 class="text-5xl font-semibold"> {{ counts.past_events }} </h1>
+                <h1 class="text-gray-500">.</h1>
+              </div>
+              <div class="h-45 w-1/5 flex justify-center items-center mr-3">
+                <div class="for_icon_1 w-14 h-14 flex justify-center items-center rounded-full text-orange-600 bg-orange-100 hover:text-orange-100 hover:bg-orange-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor" class="size-7">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </a>
+
+        </div>
+        <!-- Stats Grid End -->
+        </div>
+
+        <div class="md:w-4/5 md:m-auto">
+
+        {% if events %}
+          <h1 class="font-bold text-5xl mr-4"> {{ event_name }} </h1>
+        {% else %}
+          <h1 class="font-bold text-5xl mr-4"> {{ event_name }} </h1>
+        {% endif %}
+
+        <div class="my-20 flex flex-col sm:flex-row justify-between gap-3">
+          <div class="flex items-center justify-center">
+            <form method="GET">
+              <div class="h-10 flex items-center">
+                <select name="category_selector" id="tt" class="h-full bg-slate-300 p-2 rounded-md">
+                  <option value="" disabled selected hidden>Category</option>
+                  {% for category in categories %}
+                    <option value="{{category.id}}">{{ category.category_name }}</option>
+                  {% endfor %}
+                </select>
+                <button type="submit" class="mr-2 h-full bg-slate-500 p-2 mx-3 rounded-md text-white">Filter</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="flex items-center justify-center">
+            <form method="GET" class="flex flex-col sm:flex-row gap-2">
+              <input type="date" name="st_date" class="h-full bg-slate-300 p-2 rounded-md" required> 
+              <input type="date" name="ed_date" class="h-full bg-slate-300 p-2 rounded-md" required> 
+              <button type="submit" class="mr-2 h-full bg-slate-500 p-2 rounded-md text-white">Filter</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Events Listing -->
+
+         {% if messages %}
+          {% for message in messages %}
+            <div class="mb-3 p-3 text-center rounded-lg font-bold border w-full text-white {% if 'success' in message.tags %} bg-green-700{% endif %} {% if 'error' in message.tags %} bg-red-700{% endif %}"> {{ message }} </div>
+          {% endfor %}
+        {% endif %}
+
+
+         {% if events %}
+           {% for event in events %}
+             {% if event.id not in user_events %}
+              <a href="{% url "events_details" event.id %}">
+                <div class="mt-10 b_shadow rounded-lg">
+                  <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
+                    <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
+                    <div class="flex items-center lg:ml-3 w-full">
+                      <div class="p-2 w-full">
+                        <h1 class="font-semibold text-3xl">Title: <span>{{event.event_name}}</span></h1>
+                        <h5 class="my-1 text-lg">Category: <span>{{event.category.category_name}}</span></h5>
+                        <h5 class="my-1 text-lg">To be held: {{ event.date }} at {{ event.time }}</h5>
+                        <h5 class="my-1 text-lg">Location: {{event.location}}</h5>
+                        <h5 class="my-1 text-lg">Participant: {{ event.user_count }}</h5>
+
+                        <div class="mt-5">
+                          <form action="{% url "rsvp" event.id %}" class="flex flex-col sm:flex-row gap-2">
+                            <button type="submit" class="in_shadow w-1/2 py-3 px-1 mb-5 font-semibold rounded-lg hover:h_shadow transition duration-300">RSVP</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </a>
+             {% else %}
+                <a href="{% url "events_details" event.id %}">
+                <div class="mt-10 b_shadow rounded-lg">
+                  <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
+                    <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
+                    <div class="flex items-center lg:ml-3 w-full">
+                      <div class="p-2 w-full">
+                        <h1 class="font-semibold text-3xl">Title: <span>{{event.event_name}}</span></h1>
+                        <h5 class="my-1 text-lg">Category: <span>{{event.category.category_name}}</span></h5>
+                        <h5 class="my-1 text-lg">To be held: {{ event.date }} at {{ event.time }}</h5>
+                        <h5 class="my-1 text-lg">Location: {{event.location}}</h5>
+                        <h5 class="my-1 text-lg">Participant: {{ event.user_count }}</h5>
+
+                        <div class="my-5">
+                          <div class="h_shadow w-1/2 py-3 px-1 font-extrabold text-white rounded-lg bg-red-500 text-center"> Your RSVP already completed </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </a>
+             {% endif %}
+             {% endfor %}
+             
+         {% else %}
+            {% for event in category_events %}
+              {% if event.id not in user_events %}
+              <a href="{% url "events_details" event.id %}">
+                <div class="mt-10 b_shadow rounded-lg">
+                  <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
+                    <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
+                    <div class="flex items-center lg:ml-3 w-full">
+                      <div class="p-2 w-full">
+                        <h1 class="font-semibold text-3xl">Title: <span>{{event.event_name}}</span></h1>
+                        <h5 class="my-1 text-lg">Category: <span>{{event.category.category_name}}</span></h5>
+                        <h5 class="my-1 text-lg">To be held: {{ event.date }} at {{ event.time }}</h5>
+                        <h5 class="my-1 text-lg">Location: {{event.location}}</h5>
+                        <h5 class="my-1 text-lg">Participant: {{ event.participant.all.count }}</h5>
+
+                        <div class="mt-5">
+                          <form action="{% url "rsvp" event.id %}" class="flex flex-col sm:flex-row gap-2">
+                            <button type="submit" class="in_shadow w-1/2 py-3 px-1 mb-5 font-semibold rounded-lg hover:h_shadow transition duration-300">RSVP</button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </a>
+             {% else %}
+                <a href="{% url "events_details" event.id %}">
+                <div class="mt-10 b_shadow rounded-lg">
+                  <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
+                    <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
+                    <div class="flex items-center lg:ml-3 w-full">
+                      <div class="p-2 w-full">
+                        <h1 class="font-semibold text-3xl">Title: <span>{{event.event_name}}</span></h1>
+                        <h5 class="my-1 text-lg">Category: <span>{{event.category.category_name}}</span></h5>
+                        <h5 class="my-1 text-lg">To be held: {{ event.date }} at {{ event.time }}</h5>
+                        <h5 class="my-1 text-lg">Location: {{event.location}}</h5>
+                        <h5 class="my-1 text-lg">Participant: {{ event.participant.all.count }}</h5>
+
+                        <div class="my-5">
+                          <div class="h_shadow w-1/2 py-3 px-1 font-extrabold text-white rounded-lg bg-red-500 text-center"> Your RSVP already completed </div>
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
+                </a>
+             {% endif %}
+             {% endfor %}
+          </div>
+         {% endif %}
+        <!-- Events Listing End -->
+
+</div>
+
+{% endblock core_content %}

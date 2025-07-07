@@ -15,7 +15,7 @@
             {% if request.user.is_authenticated %}
                 {% include "admin_nav/logged_nav.html" %}
             {% else %}
-                {% include "admin_nav/non_logged_nav.html" %}
+                {% include "user_nav/non_logged_nav.html" %}
             {% endif %}
         </header>
 
