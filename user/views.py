@@ -272,7 +272,6 @@ def rsvp(request, event_id):
     event = Event.objects.get(id=event_id)
 
     is_exist = user.rsvp_events.filter(id=event_id).exists()
-    print(is_exist)
 
     if is_exist:
         messages.error(request, "You already done RSVP in this event")
