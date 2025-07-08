@@ -1,5 +1,5 @@
 
-from django.urls import path
+from django.urls import path, include
 from app_admin.views import organizer_dashboard, create_event, update_event, delete_event, category_details, edit_category_details, delete_category, create_category, organizer_search_event
 
 urlpatterns = [

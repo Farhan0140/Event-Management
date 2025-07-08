@@ -5,9 +5,10 @@ from django.db.models import Q, Count
 from app_admin.models import Category, Event
 from datetime import date
 from app_admin.forms import Create_Model_Event, Create_Model_Category
+from django.contrib.auth.decorators import login_required
 
 
-
+@login_required(login_url="/user/sign-in/")
 def organizer_dashboard(request):
 
     type = request.GET.get('type')
@@ -75,7 +76,7 @@ def organizer_dashboard(request):
     return render(request, "dashboard/organizer_dashboard.html", context)
 
 
-
+@login_required(login_url="/user/sign-in/")
 def create_event(request):
     event_form = Create_Model_Event()
     category_form = Create_Model_Category()
@@ -110,7 +111,7 @@ def create_event(request):
     return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form, "categories":Category.objects.all()})
 
 
-
+@login_required(login_url="/user/sign-in/")
 def update_event(request, id):
 
     event = Event.objects.get(id = id) 
@@ -148,6 +149,7 @@ def update_event(request, id):
 
 
 
+@login_required(login_url="/user/sign-in/")
 def delete_event(request, id):
     if request.method == "POST":
         event = Event.objects.get(id = id) 
@@ -157,7 +159,7 @@ def delete_event(request, id):
     return redirect('organizer_dashboard')
 
 
-
+@login_required(login_url="/user/sign-in/")
 def create_category(request):
     category_form = Create_Model_Category()
 
@@ -178,6 +180,7 @@ def create_category(request):
 
 
 
+@login_required(login_url="/user/sign-in/")
 def category_details(request):
     categories = Category.objects.all()
 
@@ -188,6 +191,8 @@ def category_details(request):
     return render(request, "category_details.html", context)
 
 
+
+@login_required(login_url="/user/sign-in/")
 def edit_category_details(request, id):
 
     category = Category.objects.get(id = id) 
@@ -209,6 +214,7 @@ def edit_category_details(request, id):
     return render(request, "edit_category.html", context)
 
 
+@login_required(login_url="/user/sign-in/")
 def delete_category(request, id):
     if request.method == "POST":
         category = Category.objects.get(id = id) 
@@ -218,6 +224,7 @@ def delete_category(request, id):
     return redirect('category_details')
 
 
+@login_required(login_url="/user/sign-in/")
 def organizer_search_event(request):
 
     search_txt = request.GET.get('search')

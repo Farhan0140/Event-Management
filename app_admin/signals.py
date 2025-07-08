@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
+from django.contrib.auth.models import Group
 
 
 @receiver(m2m_changed, sender=Event.participant.through)
@@ -41,3 +42,13 @@ def send_activation_mail(sender, instance, created, **kwargs):
             )
         except Exception as e:
             print("Failed to send message")
+
+
+
+@receiver(post_save, sender=User)
+def assigning_default_role(sender, instance, created, **kwargs):
+    if created:
+        user_group, created_or_exists = Group.objects.get_or_create(name="Participant")
+        instance.groups.add(user_group)
+        instance.save()
+

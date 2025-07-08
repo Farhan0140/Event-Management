@@ -8,6 +8,7 @@ from app_admin.models import Event, Category
 from datetime import date
 from django.db.models import Count
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -74,6 +75,7 @@ def sign_out(request):
 
 
 # Admin Part
+@login_required(login_url="/user/sign-in/")
 def show_all_user(request):
     users = User.objects.all()
 
@@ -84,6 +86,7 @@ def show_all_user(request):
     return render(request, "admin/admin_dashboard.html", context)
 
 
+@login_required(login_url="/user/sign-in/")
 def delete_user(request, user_id):
     user = User.objects.get(id=user_id)
     user_name = user.username
@@ -103,7 +106,7 @@ def delete_user(request, user_id):
 
 
 
-
+@login_required(login_url="/user/sign-in/")
 def assign_role(request, user_id):
     user = User.objects.get(id = user_id)
     roles = Group.objects.all()
@@ -125,6 +128,7 @@ def assign_role(request, user_id):
     return render(request, "admin/change_role.html", context)
 
 
+@login_required(login_url="/user/sign-in/")
 def create_role(request):   # creating group
     form = create_group_form()
 
@@ -144,6 +148,7 @@ def create_role(request):   # creating group
     return render(request, "admin/create_role.html", context)
 
 
+@login_required(login_url="/user/sign-in/")
 def delete_role(request, group_id):
     group = Group.objects.get(id = group_id)
 
@@ -156,6 +161,7 @@ def delete_role(request, group_id):
     return redirect('groups')
 
 
+@login_required(login_url="/user/sign-in/")
 def update_role(request, group_id):
     group = Group.objects.get(id = group_id)
     form = create_group_form(instance=group)
@@ -175,6 +181,7 @@ def update_role(request, group_id):
     return render(request, "admin/create_role.html", context)
 
 
+@login_required(login_url="/user/sign-in/")
 def group_lists(request):
     groups = Group.objects.all()
 
@@ -187,6 +194,7 @@ def group_lists(request):
 
 # Participant Part
 
+@login_required(login_url="user/sign-in/")
 def participant_dashboard(request):
     user = User.objects.get(id=request.user.id)
     events = user.rsvp_events.all()
@@ -200,7 +208,7 @@ def participant_dashboard(request):
 
 
 
-
+@login_required(login_url="user/sign-in/")
 def events_list(request):
 
     type = request.GET.get('type')
@@ -270,6 +278,7 @@ def events_list(request):
     return render(request, "participant/events_list.html", context)
 
 
+@login_required(login_url="user/sign-in/")
 def view_details(request, event_id):
     user = User.objects.get(id=request.user.id)
     event = Event.objects.get(id = event_id)
@@ -282,7 +291,7 @@ def view_details(request, event_id):
     return render(request, "participant/event_details.html", context)
 
 
-
+@login_required(login_url="user/sign-in/")
 def rsvp(request, event_id):
     user = User.objects.get(id=request.user.id)
     event = Event.objects.get(id=event_id)
@@ -299,6 +308,7 @@ def rsvp(request, event_id):
     return redirect('events_list')
 
 
+@login_required(login_url="user/sign-in/")
 def search_event(request):
 
     search_txt = request.GET.get('search')
