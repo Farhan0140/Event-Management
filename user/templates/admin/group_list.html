@@ -27,7 +27,7 @@
               <td class="border-r-2 border-b-2 border-black p-2"><span class="text-lg font-semibold">{{group.name}}</span></td>
               <td class="border-b-2 border-black p-2">
                     {% for permission in group.permissions.all %}
-                        <div class="border-b-2 border-gray-600 w-full py-2">{{permission}}</div>
+                        <div class="border-b-2 border-gray-600 w-full py-2">{{permission}}>>{{permission.codename}}</div>
                     {% endfor %}
               </td>
               <td class="border-b-2 border-l-2 border-black">

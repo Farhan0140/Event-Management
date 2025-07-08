@@ -8,9 +8,20 @@ from app_admin.models import Event, Category
 from datetime import date
 from django.db.models import Count
 from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from app_admin.views import is_organizer
 
-# Create your views here.
+
+
+# checking User groups
+
+def is_admin(user):
+    return user.groups.filter(name="Admin").exists()
+
+
+def is_participant(user):
+    return user.groups.filter(name="Participant").exists()
+
 
 
 def user_registration(request):
@@ -47,6 +58,17 @@ def activate_user(request, user_id, token):
         print("User not found")
 
 
+def dashboard(request):
+    user = request.user
+
+    if is_admin(user):
+        return redirect("admin_dashboard")
+    elif is_organizer(user):
+        return redirect("organizer_dashboard")
+    else:
+        return redirect("home")
+
+
 def sign_up(request):
     form = sign_in_form()
 
@@ -57,8 +79,13 @@ def sign_up(request):
             user = form.get_user()
             login(request, user)
 
-            # return redirect("eikhane user jei group er oi dashboard e redirect korbe")
-            return redirect("home")
+            if is_admin(user):
+                return redirect("admin_dashboard")
+            elif is_organizer(user):
+                return redirect("organizer_dashboard")
+            else:
+                return redirect("home")
+            
 
     context = {
         'form': form,
@@ -76,6 +103,7 @@ def sign_out(request):
 
 # Admin Part
 @login_required(login_url="/user/sign-in/")
+@user_passes_test(is_admin, login_url="no_permission")
 def show_all_user(request):
     users = User.objects.all()
 
@@ -87,6 +115,7 @@ def show_all_user(request):
 
 
 @login_required(login_url="/user/sign-in/")
+@user_passes_test(is_admin, login_url="no_permission")
 def delete_user(request, user_id):
     user = User.objects.get(id=user_id)
     user_name = user.username
@@ -107,6 +136,7 @@ def delete_user(request, user_id):
 
 
 @login_required(login_url="/user/sign-in/")
+@user_passes_test(is_admin, login_url="no_permission")
 def assign_role(request, user_id):
     user = User.objects.get(id = user_id)
     roles = Group.objects.all()
@@ -129,6 +159,7 @@ def assign_role(request, user_id):
 
 
 @login_required(login_url="/user/sign-in/")
+@user_passes_test(is_admin, login_url="no_permission")
 def create_role(request):   # creating group
     form = create_group_form()
 
@@ -149,6 +180,7 @@ def create_role(request):   # creating group
 
 
 @login_required(login_url="/user/sign-in/")
+@user_passes_test(is_admin, login_url="no_permission")
 def delete_role(request, group_id):
     group = Group.objects.get(id = group_id)
 
@@ -162,6 +194,7 @@ def delete_role(request, group_id):
 
 
 @login_required(login_url="/user/sign-in/")
+@user_passes_test(is_admin, login_url="no_permission")
 def update_role(request, group_id):
     group = Group.objects.get(id = group_id)
     form = create_group_form(instance=group)
@@ -182,6 +215,7 @@ def update_role(request, group_id):
 
 
 @login_required(login_url="/user/sign-in/")
+@user_passes_test(is_admin, login_url="no_permission")
 def group_lists(request):
     groups = Group.objects.all()
 
