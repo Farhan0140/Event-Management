@@ -79,7 +79,7 @@ class Create_Model_Category( forms.ModelForm ):
                 'Placeholder': "Enter new name to create category",
                 'class': "in_shadow focus:in_shadow p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full",
             }),
-            'description': forms.Textarea(attrs={
+            'category_description': forms.Textarea(attrs={
                 "placeholder": "Enter Valid Description about Category:",
                 "class": "in_shadow focus:in_shadow p-2 my-4 border rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 w-full",
                 'rows': 3,

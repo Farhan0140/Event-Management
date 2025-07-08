@@ -141,7 +141,7 @@ def update_event(request, id):
                 event.category = category
                 event.save()
                 messages.success(request, "Event Update Successfully")
-                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+                return redirect('organizer_dashboard')
             else:
                 id = obj.first().id
                 objt = Category.objects.get(id=id)
@@ -149,7 +149,7 @@ def update_event(request, id):
                 event.category = objt
                 event.save()
                 messages.success(request, "Event Update Successfully")
-                return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form})
+                return redirect('organizer_dashboard')
 
 
     return render(request, "create_event.html", {"event_form": event_form, "category_form": category_form, "categories":Category.objects.all()})
