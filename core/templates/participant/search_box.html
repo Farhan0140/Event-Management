@@ -9,7 +9,7 @@
   <h1 class="text-center font-semibold text-3xl border-b-2 border-black pb-5">Matched with Event name</h1>
 
   {% for event in search_result_by_name %}
-    <a href="">
+    <a href="{% url "events_details" event.id %}">
         <div class="mt-10 b_shadow rounded-lg">
             <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
                 <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 
@@ -30,7 +30,7 @@
   <h1 class="text-center font-semibold text-3xl border-b-2 border-black pb-5 mt-10">Matched with Event Location</h1>
 
   {% for event in search_result_by_location %}
-    <a href="">
+    <a href="{% url "events_details" event.id %}">
         <div class="mt-10 b_shadow rounded-lg">
             <div class="w-full flex gap-3 flex-wrap lg:flex-nowrap">
                 <img class="lg:w-2/5 " src="{{event.event_image.url}}" alt=""> 

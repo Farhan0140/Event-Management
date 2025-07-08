@@ -80,7 +80,8 @@ INTERNAL_IPS = [
 WSGI_APPLICATION = 'Event_Management.wsgi.application'
 
 
-FRONTEND_URL = 'http://127.0.0.1:8000'
+# FRONTEND_URL = 'http://127.0.0.1:8000'
+FRONTEND_URL = 'https://event-management-am6x.onrender.com'
 
 
 # Database

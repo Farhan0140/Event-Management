@@ -35,7 +35,7 @@ def send_activation_mail(sender, instance, created, **kwargs):
         try:
             send_mail(
                 "Activate your Account",
-                f"Hi, {instance.username},\n\nPlease activate your account by clicking the link below\n\n{activation_url}\n\n\nThank You for your registration....\n\nNow you are mitur jamai",
+                f"Hi, {instance.username},\n\nPlease activate your account by clicking the link below\n\n{activation_url}\n\n\nThank You for your registration....",
                 "settings.EMAIL_HOST_USER",
                 [instance.email],
                 fail_silently=False,
