@@ -30,7 +30,7 @@ def for_rsvp(sender, instance, action, pk_set, **kwargs):
 def send_activation_mail(sender, instance, created, **kwargs):
     if created:
         token = default_token_generator.make_token(instance)
-        activation_url = f"{settings.FRONTEND_URL}/user/activate/{instance.id}/{token}/"
+        activation_url = f"{settings.FRONTEND_RENDER_URL}/user/activate/{instance.id}/{token}/"
 
         try:
             send_mail(
