@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from user.forms import Register_Form, sign_in_form, create_group_form
+from user.forms import Register_Form, sign_in_form, create_group_form, Update_Profile_Form
 from django.contrib.auth.models import Group
 from app_admin.models import Event, Category
 from datetime import date
@@ -10,7 +10,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from app_admin.views import is_organizer
 from django.contrib.auth import get_user_model
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 
@@ -383,4 +383,18 @@ class Profile( LoginRequiredMixin, TemplateView ):
         context["last_login"] = user.last_login
         context["date_joined"] = user.date_joined
         return context
+    
+
+class Edit_Profile( UpdateView ):
+    model = User
+    template_name = 'accounts/update_profile.html'
+    form_class = Update_Profile_Form
+
+    def get_object(self):
+        return self.request.user
+    
+    def form_valid(self, form):
+        form.save(commit=True)
+        return redirect('user_profile')
+    
     

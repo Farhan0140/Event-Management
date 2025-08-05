@@ -4,6 +4,7 @@ from app_admin.forms import For_Mixin
 import re
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import get_user_model
+from user.models import Custom_User
 
 User = get_user_model()
 
@@ -76,3 +77,8 @@ class create_group_form(For_Mixin, forms.ModelForm):
             "permissions": forms.CheckboxSelectMultiple()
         }
     
+
+class Update_Profile_Form( For_Mixin, forms.ModelForm ):
+    class Meta:
+        model = Custom_User
+        fields = ['first_name', 'last_name', 'phone', 'profile_img']
