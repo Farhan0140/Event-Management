@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from user.forms import Register_Form, sign_in_form, create_group_form, Update_Profile_Form
+from user.forms import Register_Form, sign_in_form, create_group_form, Update_Profile_Form, Change_Password_Form
 from django.contrib.auth.models import Group
 from app_admin.models import Event, Category
 from datetime import date
@@ -13,6 +13,7 @@ from django.contrib.auth import get_user_model
 from django.views.generic import TemplateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordChangeView
 
 User = get_user_model()
 
@@ -398,3 +399,6 @@ class Edit_Profile( UpdateView ):
         return redirect('user_profile')
     
     
+class Change_Password( PasswordChangeView ):
+    template_name = "accounts/change_password.html"
+    form_class = Change_Password_Form
