@@ -80,27 +80,28 @@ INTERNAL_IPS = [
 WSGI_APPLICATION = 'Event_Management.wsgi.application'
 
 
-# FRONTEND_URL = 'http://127.0.0.1:8000'
-FRONTEND_RENDER_URL = 'https://event-management-am6x.onrender.com'
+FRONTEND_URL = 'http://127.0.0.1:8000'
+# FRONTEND_RENDER_URL = 'https://event-management-am6x.onrender.com'
 
+AUTH_USER_MODEL = "user.Custom_User"
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'event_management',
-#         'USER': 'postgres',
-#         'PASSWORD': 'admin',
-#         'HOST': 'localhost',
-#         'PORT': '5432'
-#     }
-# }
-
 DATABASES = {
-    'default': dj_database_url.config(default='postgresql://event_management_e3p0_user:o8wN95InrPiwKJ5yY9FJuv07MNxBmFwY@dpg-d1sbmu95pdvs73aah8g0-a.oregon-postgres.render.com/event_management_e3p0',conn_max_age=600)
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'event_management',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '5432'
+    }
 }
+
+# DATABASES = {
+#     'default': dj_database_url.config(default='postgresql://event_management_e3p0_user:o8wN95InrPiwKJ5yY9FJuv07MNxBmFwY@dpg-d1sbmu95pdvs73aah8g0-a.oregon-postgres.render.com/event_management_e3p0',conn_max_age=600)
+# }
 
 
 # Password validation

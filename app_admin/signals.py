@@ -1,11 +1,14 @@
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from app_admin.models import Event
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
 from django.contrib.auth.models import Group
+
+
+User = get_user_model()
 
 
 @receiver(m2m_changed, sender=Event.participant.through)
@@ -30,7 +33,8 @@ def for_rsvp(sender, instance, action, pk_set, **kwargs):
 def send_activation_mail(sender, instance, created, **kwargs):
     if created:
         token = default_token_generator.make_token(instance)
-        activation_url = f"{settings.FRONTEND_RENDER_URL}/user/activate/{instance.id}/{token}/"
+        # activation_url = f"{settings.FRONTEND_RENDER_URL}/user/activate/{instance.id}/{token}/"
+        activation_url = f"{settings.FRONTEND_URL}/user/activate/{instance.id}/{token}/"
 
         try:
             send_mail(

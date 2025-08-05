@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 
 
 # class RSVP(models.Model):
@@ -34,7 +34,7 @@ class Event(models.Model):
         related_name="events"
     )
     participant = models.ManyToManyField(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name="rsvp_events",
         null=True,
         blank=True,

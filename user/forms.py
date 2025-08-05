@@ -1,8 +1,11 @@
 from django import forms
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from app_admin.forms import For_Mixin
 import re
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class Register_Form(For_Mixin, forms.ModelForm):

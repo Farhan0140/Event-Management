@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from user.forms import Register_Form, sign_in_form, create_group_form
-from django.contrib.auth.models import User
 from django.contrib.auth.models import Group
 from app_admin.models import Event, Category
 from datetime import date
@@ -10,6 +9,12 @@ from django.db.models import Count
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from app_admin.views import is_organizer
+from django.contrib.auth import get_user_model
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+
+User = get_user_model()
 
 
 
@@ -359,3 +364,23 @@ def search_event(request):
 
 def no_permission(request):
     return render(request, "no_permission.html")
+
+
+class Profile( LoginRequiredMixin, TemplateView ):
+    template_name = 'accounts/profile.html'
+    login_url = reverse_lazy("sign-in")
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+
+        context = super().get_context_data(**kwargs)
+        context["user_name"] = user.username 
+        context["user_image"] = user.profile_img
+        context["full_name"] = user.get_full_name()
+        context["email"] = user.email
+        context["phone"] = user.phone
+
+        context["last_login"] = user.last_login
+        context["date_joined"] = user.date_joined
+        return context
+    
