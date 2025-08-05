@@ -38,11 +38,12 @@
 
       <div id="UserName" class="relative mx-4 hidden md:block" id="userMenuWrapper">
         
-          <div class="w-10 h-10 rounded-full cursor-pointer border-2 bg-sky-500 flex items-center justify-center text-white font-semibold" onclick="toggleUserMenu()">{{request.user.username|upper|slice:":2"}}</div>
+          <div class="w-10 h-10 rounded-full cursor-pointer border-2 bg-sky-500 flex items-center justify-center text-white font-semibold" onclick="toggleUserMenu()"><img src="{{request.user.profile_img.url}}" alt="" class="rounded-full"></div>
             
           <div id="userDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg hidden z-50">
               <ul class="py-2 text-gray-700">
                 <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer font-medium">{{ request.user.username }}</li>
+                <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer"><a href="{% url "user_profile" %}">Profile</a></li>
                 <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
                   <form action="{% url "sign-out" %}" method="POST">
                     {% csrf_token %}

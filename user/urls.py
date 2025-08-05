@@ -1,13 +1,13 @@
 
 from django.urls import path
-from user.views import user_registration, sign_up, sign_out, show_all_user, assign_role, create_role, delete_user, group_lists, update_role, delete_role, activate_user, Profile, Edit_Profile, Change_Password, Reset_Password, Confirm_Reset_Password
+from user.views import user_registration, sign_up, sign_out, assign_role, create_role, delete_user, group_lists, update_role, delete_role, activate_user, Profile, Edit_Profile, Change_Password, Reset_Password, Confirm_Reset_Password, Show_All_User
 from django.contrib.auth.views import PasswordChangeDoneView
 
 urlpatterns = [
     path("sign-up/", user_registration, name="sign-up"),
     path("sign-in/", sign_up, name="sign-in"),
     path("sign-out/", sign_out, name="sign-out"),
-    path("admin/dashboard/", show_all_user, name="admin_dashboard"),
+    path("admin/dashboard/", Show_All_User.as_view(), name="admin_dashboard"),
     path("admin/create_role/", create_role, name="create_role"),
     path("admin/<int:user_id>/assign_role/", assign_role, name="assign_role"),
     path("admin/<int:user_id>/delete_user/", delete_user, name="delete_user"),

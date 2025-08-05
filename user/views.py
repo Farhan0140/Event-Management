@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from user.forms import Register_Form, sign_in_form, create_group_form, Update_Profile_Form, Change_Password_Form, Reset_Password_Form, Reset_Password_Confirm_Form
@@ -10,10 +10,11 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from app_admin.views import is_organizer
 from django.contrib.auth import get_user_model
-from django.views.generic import TemplateView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import TemplateView, UpdateView, DetailView, ListView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordChangeView, PasswordResetView, PasswordResetConfirmView
+from django.views import View
 
 User = get_user_model()
 
@@ -108,16 +109,19 @@ def sign_out(request):
 
 
 # Admin Part
-@login_required(login_url="/user/sign-in/")
-@user_passes_test(is_admin, login_url="no_permission")
-def show_all_user(request):
-    users = User.objects.all()
+class Show_All_User(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = User
+    template_name = "admin/admin_dashboard.html"
+    context_object_name = "users"
+    login_url = "/user/sign-in/"
 
-    context = {
-        "users": users,
-    }
+    def test_func(self):
+        return is_admin(self.request.user)
 
-    return render(request, "admin/admin_dashboard.html", context)
+    def handle_no_permission(self):
+        if not self.request.user.is_authenticated:
+            return super().handle_no_permission()
+        return redirect("no_permission")
 
 
 @login_required(login_url="/user/sign-in/")
@@ -234,16 +238,14 @@ def group_lists(request):
 
 # Participant Part
 
-@login_required(login_url="user/sign-in/")
-def participant_dashboard(request):
-    user = User.objects.get(id=request.user.id)
-    events = user.rsvp_events.all()
+class Participant_Dashboard(LoginRequiredMixin, ListView):
+    model = Event
+    template_name = "participant/dashboard.html"
+    context_object_name = "events"
+    login_url = "user/sign-in/"
 
-    context = {
-        "events": events,
-    }
-    
-    return render(request, "participant/dashboard.html", context)
+    def get_queryset(self):
+        return self.request.user.rsvp_events.all()
 
 
 
@@ -318,49 +320,52 @@ def events_list(request):
     return render(request, "participant/events_list.html", context)
 
 
-@login_required(login_url="user/sign-in/")
-def view_details(request, event_id):
-    user = User.objects.get(id=request.user.id)
-    event = Event.objects.get(id = event_id)
+class View_Detail(LoginRequiredMixin, DetailView):
+    model = Event
+    template_name = "participant/event_details.html"
+    context_object_name = "event"
+    login_url = "user/sign-in/"
+    pk_url_kwarg = "event_id"
 
-    context = {
-        "event": event,
-        "is_rsvp": user.rsvp_events.filter(id=event_id).exists(),
-    }
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        event_id = self.kwargs.get("event_id")
+        context["is_rsvp"] = user.rsvp_events.filter(id=event_id).exists()
+        return context
 
-    return render(request, "participant/event_details.html", context)
 
+class RSVP(LoginRequiredMixin, View):
+    login_url = "user/sign-in/"
 
-@login_required(login_url="user/sign-in/")
-def rsvp(request, event_id):
-    user = User.objects.get(id=request.user.id)
-    event = Event.objects.get(id=event_id)
+    def get(self, request, event_id):
+        user = request.user
+        event = get_object_or_404(Event, id=event_id)
 
-    is_exist = user.rsvp_events.filter(id=event_id).exists()
+        if user.rsvp_events.filter(id=event_id).exists():
+            messages.error(request, "You already done RSVP in this event")
+            return redirect('events_list')
 
-    if is_exist:
-        messages.error(request, "You already done RSVP in this event")
+        event.participant.add(user)
+        messages.success(request, "Your RSVP successfully completed")
         return redirect('events_list')
-    
-    event.participant.add(user)
-
-    messages.success(request, "Your RSVP successfully completed")
-    return redirect('events_list')
 
 
-@login_required(login_url="user/sign-in/")
-def search_event(request):
+class Search_Event(LoginRequiredMixin, View):
+    login_url = "user/sign-in/"
 
-    search_txt = request.GET.get('search')
+    def get(self, request):
+        search_txt = request.GET.get('search', '')
 
-    search_result_by_name = Event.objects.filter(event_name__icontains=search_txt)
-    search_result_by_location = Event.objects.filter(location__icontains=search_txt)
-    context = {
-        'search_result_by_name': search_result_by_name,
-        'search_result_by_location': search_result_by_location,
-    }
+        search_result_by_name = Event.objects.filter(event_name__icontains=search_txt)
+        search_result_by_location = Event.objects.filter(location__icontains=search_txt)
 
-    return render(request, "participant/search_box.html", context)
+        context = {
+            'search_result_by_name': search_result_by_name,
+            'search_result_by_location': search_result_by_location,
+        }
+
+        return render(request, "participant/search_box.html", context)
 
 
 def no_permission(request):
