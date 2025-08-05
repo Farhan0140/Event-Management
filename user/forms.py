@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import Group
 from app_admin.forms import For_Mixin
 import re
-from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth import get_user_model
 from user.models import Custom_User
 
@@ -85,4 +85,11 @@ class Update_Profile_Form( For_Mixin, forms.ModelForm ):
 
 
 class Change_Password_Form( For_Mixin, PasswordChangeForm ):
+    pass
+
+
+class Reset_Password_Form( For_Mixin, PasswordResetForm ):
+    pass
+
+class Reset_Password_Confirm_Form( For_Mixin, SetPasswordForm ):
     pass
