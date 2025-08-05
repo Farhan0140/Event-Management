@@ -100,7 +100,7 @@ AUTH_USER_MODEL = "user.Custom_User"
 # }
 
 DATABASES = {
-    'default': dj_database_url.config(default='postgresql://event_management_e3p0_user:o8wN95InrPiwKJ5yY9FJuv07MNxBmFwY@dpg-d1sbmu95pdvs73aah8g0-a.oregon-postgres.render.com/event_management_e3p0',conn_max_age=600)
+    'default': dj_database_url.config(default='postgresql://event_management_w3ny_user:CHT6SwDsn99TR3aWLSLLmzLZ74Yd9zDG@dpg-d2918e6uk2gs73fu8d50-a.oregon-postgres.render.com/event_management_w3ny',conn_max_age=600)
 }
 
 
